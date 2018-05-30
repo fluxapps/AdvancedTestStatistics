@@ -1,0 +1,148 @@
+<script>
+	$(document).ready(function () {
+		var handler = function(e) {
+			$('.multipleinput_new').last().clone().appendTo('#input_collection').fadeIn(500);
+			$('.multipleinput_new').last().find('input').last().val('');
+			return false;
+		}
+
+		$(document).on("click", 'span.add_button', handler);
+		$('span.delete_button').click(function () {
+			var mydiff = $(this).parent().parent().parent();
+			mydiff.find('input').each(function () {
+				$(this).val('');
+			});
+			mydiff.fadeOut(500);
+
+		});
+	});
+</script>
+
+<form>
+<!-- BEGIN TRIGGER -->
+<table id="input_collection">
+
+<tr class="multipleinput_old">
+<td>
+<select>
+  <!-- BEGIN OPTIONS_OLD -->
+  {SELECT_NAME_OLD}<option value = "{OPTION_VALUE_OLD}"> {OPTION_OLD} </option>
+  <!-- END OPTIONS_OLD -->
+</select>
+</td>
+
+<td>
+<select>
+  <!-- BEGIN OPTIONS1_OLD -->
+  {SELECT_NAME1_OLD}<option value = "{OPTION_VALUE1_OLD}"> {OPTION1_OLD} </option>
+  <!-- END OPTIONS1_OLD -->
+</select>
+</td>
+
+<td>
+<!-- BEGIN VALUE_OLD -->
+<input type="number" name="value" value="{VALUE_OLD}">
+<!-- END VALUE_OLD -->
+</td>
+
+<td>
+<select>
+  <!-- BEGIN OPTIONS2_OLD -->
+  {SELECT_NAME2_OLD}<option value = "{OPTION_VALUE2_OLD}"> {OPTION2_OLD} </option>
+  <!-- END OPTIONS2_OLD -->
+</select>
+</td>
+
+<td>
+<select>
+  <!-- BEGIN OPTIONS3_OLD -->
+  {SELECT_NAME3_OLD}<option value = "{OPTION_VALUE3_OLD}"> {OPTION3_OLD} </option>
+  <!-- END OPTIONS3_OLD -->
+</select>
+</td>
+
+<td>
+<input type="number" name="value" value="{VALUE1_OLD}">
+</td>
+
+<td>
+{SEARCHFIELD_OLD}
+</td>
+
+<td class="{LOCK_CSS}">
+<a><span class="glyphicon glyphicon-minus delete_button" aria-hidden="true"></span></a>
+</td>
+
+<td>
+<button type="button" name="Trigger"> Trigger </button>
+</td>
+<td>
+<button type="button" name="Copy"> Copy </button>
+</td>
+</tr>
+
+<tr class="multipleinput_new">
+<td>
+<select>
+  <!-- BEGIN OPTIONS -->
+  {SELECT_NAME}<option value = "{OPTION_VALUE}"> {OPTION} </option>
+  <!-- END OPTIONS -->
+</select>
+</td>
+
+<td>
+<select>
+  <!-- BEGIN OPTIONS1 -->
+  {SELECT_NAME1}<option value = "{OPTION_VALUE1}"> {OPTION1} </option>
+  <!-- END OPTIONS1 -->
+</select>
+</td>
+
+<td>
+<!-- BEGIN VALUE -->
+<input type="number" name="value" value="{VALUE}">
+<!-- END VALUE -->
+</td>
+
+<td>
+<select>
+  <!-- BEGIN OPTIONS2 -->
+  {SELECT_NAME2}<option value = "{OPTION_VALUE2}"> {OPTION2} </option>
+  <!-- END OPTIONS2 -->
+</select>
+</td>
+
+<td>
+<select>
+  <!-- BEGIN OPTIONS3 -->
+  {SELECT_NAME3}<option value = "{OPTION_VALUE3}"> {OPTION3} </option>
+  <!-- END OPTIONS3 -->
+</select>
+</td>
+
+<td>
+<input type="number" name="value" value="{VALUE1}">
+</td>
+
+<td>
+{SEARCHFIELD}
+</td>
+
+<td>
+<a><span class="glyphicon glyphicon-plus add_button" aria-hidden="true"></span></a>
+</td>
+
+<td>
+<button type="button" name="Trigger"> Trigger </button>
+</td>
+<td>
+<button type="button" name="Copy"> Copy </button>
+</td>
+
+</tr>
+<!-- END TRIGGER -->
+</table>
+
+
+<button> <a href="{HREF}" style="text-decoration: none"> SUBMIT </a> </button>
+</form>
