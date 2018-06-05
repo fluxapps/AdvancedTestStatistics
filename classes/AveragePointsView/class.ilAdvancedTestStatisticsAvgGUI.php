@@ -50,7 +50,12 @@ class ilAdvancedTestStatisticsAvgGUI {
 
 
 	public function display(){
+		$this->tpl->getStandardTemplate();
 		$this->initHeader();
+
+		$table = new ilAdvancedTestStatisticsAvgTableGUI($this,ilAdvancedTestStatisticsAvgGUI::CMD_DISPLAY);
+
+		$this->tpl->setContent($table->getHTML());
 		$this->tpl->show();
 
 	}

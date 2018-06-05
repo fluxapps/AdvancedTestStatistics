@@ -36,7 +36,7 @@ class ilAdvancedTestStatisticsFilterFormGUI extends ilPropertyFormGUI {
 	 */
 	public $extendedFields = array(
 		"avg_points_finished" => "Average Points finished tests",
-		"avg_result_passed" => "Average result passed tests",
+		"avg_result_passed" => "Average result (%) passed tests",
 		"avg_result_finished" => "Average result(%) finished tests",
 		"avg_result_finished_run_one" => "Average result(%) passed tests (Run 1)",
 		"avg_result_passed_run_one" => "Average result(%) finished tests (Run 1)",
