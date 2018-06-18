@@ -67,7 +67,7 @@ class ilAdvancedTestStatisticsAvgGUI {
 		$this->tpl->setTitleIcon(ilObject::_getIcon($this->test->getId()));
 
 		$this->ctrl->setParameterByClass('ilrepositorygui', 'ref_id', (int)$_GET['ref_id']);
-		$this->tabs->setBackTarget($this->pl->txt('btn_back'), $this->ctrl->getLinkTargetByClass(array( 'ilrepositorygui', 'ilObjTestGUI' )));
+		$this->tabs->setBackTarget($this->pl->txt('btn_back'), $this->ctrl->getLinkTargetByClass(array( 'ilrepositorygui', 'ilObjTestGUI', 'ilTestEvaluationGUI' ), 'outEvaluation'));
 	}
 
 }

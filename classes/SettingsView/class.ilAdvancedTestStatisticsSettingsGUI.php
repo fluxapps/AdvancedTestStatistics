@@ -59,8 +59,8 @@ class ilAdvancedTestStatisticsSettingsGUI {
 	public function displayAlerts(){
 		$this->initHeader();
 
-		$form = new ilAdvancedTestStatisticsAlertFormGUI($this, new xatsFilter());
-		$this->tpl->setContent($form->getHTML());
+		$form = new ilAdvancedTestStatisticsAlertFormGUI($this);
+		$this->tpl->setContent($form->setContent());
 
 		$this->tpl->show();
 
@@ -82,7 +82,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 	//	$this->tpl->setTabs($this->tabs);
 
 		$this->ctrl->setParameterByClass('ilrepositorygui', 'ref_id', (int)$_GET['ref_id']);
-		$this->tabs->setBackTarget($this->pl->txt('btn_back'), $this->ctrl->getLinkTargetByClass(array( 'ilrepositorygui', 'ilObjTestGUI' )));
+		$this->tabs->setBackTarget($this->pl->txt('btn_back'), $this->ctrl->getLinkTargetByClass(array( 'ilrepositorygui', 'ilObjTestGUI', 'ilTestEvaluationGUI' ), 'outEvaluation'));
 	}
 
 	public function updateFilter(){
@@ -99,7 +99,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 	}
 
 	public function createTrigger(){
-
+	print_r("here");
 
 	}
 

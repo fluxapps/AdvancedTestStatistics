@@ -1,0 +1,7 @@
+cols_result #:# Resultat
+cols_value #:# Wert
+cols_question_id #:# Question ID
+cols_question_title #:# Titel
+cols_points #:# Punkte
+cols_percentage #:# Prozentwert
+cols_number_answers #:# Antworten

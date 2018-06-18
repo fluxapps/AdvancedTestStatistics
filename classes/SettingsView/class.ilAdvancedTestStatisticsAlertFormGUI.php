@@ -38,9 +38,8 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 	 * ilAdvancedTestStatisticsAlertFormGUI constructor.
 	 *
 	 * @param            $parent_gui
-	 * @param xatsFilter $filter
 	 */
-	public function __construct($parent_gui, xatsFilter $filter) {
+	public function __construct($parent_gui) {
 		global $ilCtrl, $tpl;
 
 		$this->ctrl = $ilCtrl;
@@ -50,22 +49,15 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 		$this->parent_gui = $parent_gui;
 		$this->setFormAction($this->ctrl->getFormAction($this->parent_gui));
 
+		$this->ctrl->setParameterByClass(ilAdvancedTestStatisticsSettingsGUI::class,'ref_id',$this->ref_id);
+
 		parent::__construct();
 
-		$this->show();
-		//$this->getContent();
+
+
 
 	}
 
-	public function show(){
-		$user = new ilTextInputGUI("user", "login");
-		$user->setDataSource($this->ctrl->getLinkTargetByClass(array(
-			ilUIPluginRouterGUI::class,
-			ilAdvancedTestStatisticsPlugin::class
-		), ilAdvancedTestStatisticsPlugin::CMD_ADD_USER_AUTO_COMPLETE, "", true));
-		$user->setInfo("User");
-		$this->addItem($user);
-	}
 
 
 
@@ -112,7 +104,6 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 
 		$this->tpl->setVariable('VALUE1', 'Value');
 		$this->tpl->parseCurrentBlock();
-
 		$user = new ilTextInputGUI("user", "login");
 		$user->setDataSource($this->ctrl->getLinkTargetByClass(array(
 			ilUIPluginRouterGUI::class,
@@ -125,7 +116,6 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 		$this->tpl->setVariable("SEARCHFIELD",$html);
 
 		$link = $this->ctrl->getLinkTargetByClass(ilAdvancedTestStatisticsSettingsGUI::class, ilAdvancedTestStatisticsSettingsGUI::CMD_CREATE_TRIGGER);
-		$this->ctrl->setParameterByClass(ilAdvancedTestStatisticsSettingsGUI::class, 'ref_id',$this->ref_id);
 		$this->tpl->setVariable("HREF",$link);
 
 		return $this->tpl->get();

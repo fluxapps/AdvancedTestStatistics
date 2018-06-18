@@ -1,9 +1,6 @@
 <?php
 
-
-
 class ilAdvancedTestStatisticsAvgTableGUI extends ilTable2GUI {
-
 
 	/**
 	 * @var ilTabsGUI
@@ -18,6 +15,10 @@ class ilAdvancedTestStatisticsAvgTableGUI extends ilTable2GUI {
 	 * @var ilAdvancedTestStatisticsPlugin
 	 */
 	protected $pl;
+	/**
+	 * @var object
+	 */
+	protected $object;
 
 
 	public function __construct($a_parent_obj, $a_parent_cmd = "", $a_template_context = "") {
@@ -26,6 +27,10 @@ class ilAdvancedTestStatisticsAvgTableGUI extends ilTable2GUI {
 		$this->ctrl = $ilCtrl;
 		$this->tabs = $ilTabs;
 		$this->pl = ilAdvancedTestStatisticsPlugin::getInstance();
+		$this->ref_id = $_GET['ref_id'];
+		$this->object = ilObjectFactory::getInstanceByRefId($this->ref_id);
+		$this->setExportFormats(array(self::EXPORT_EXCEL));
+		$this->ctrl->setParameterByClass(ilAdvancedTestStatisticsAvgGUI::class,'ref_id',$this->ref_id);
 
 		parent::__construct($a_parent_obj, $a_parent_cmd, $a_template_context);
 
@@ -36,14 +41,38 @@ class ilAdvancedTestStatisticsAvgTableGUI extends ilTable2GUI {
 	}
 
 
+	public function constructArray() {
+		//$data = $this->object->getAggregatedResultsData();
+		$class = new ilAdvancedTestStatisticsAvgResults();
+		$data = $class->getQuestionsFiltered($this->ref_id);
+
+		return $data['questions'];
+	}
+
+
 	public function getSelectableColumns() {
 		$cols = array();
 
-		$cols['question_id'] = array( 'txt' => $this->pl->txt('cols_question_id'), 'default' => true, 'width' => 'auto', 'sort_field' => 'question_id' );
-		$cols['question_title'] = array( 'txt' => $this->pl->txt('cols_question_title'), 'default' => true, 'width' => 'auto', 'sort_field' => 'question_title' );
+		$cols['question_id'] = array(
+			'txt' => $this->pl->txt('cols_question_id'),
+			'default' => true,
+			'width' => 'auto',
+			'sort_field' => 'question_id'
+		);
+		$cols['question_title'] = array(
+			'txt' => $this->pl->txt('cols_question_title'),
+			'default' => true,
+			'width' => 'auto',
+			'sort_field' => 'question_title'
+		);
 		$cols['points'] = array( 'txt' => $this->pl->txt('cols_points'), 'default' => true, 'width' => 'auto', 'sort_field' => 'points' );
 		$cols['percentage'] = array( 'txt' => $this->pl->txt('cols_percentage'), 'default' => true, 'width' => 'auto', 'sort_field' => 'percentage' );
-		$cols['number_answers'] = array( 'txt' => $this->pl->txt('cols_number_answers'), 'default' => true, 'width' => 'auto', 'sort_field' => 'number_answers' );
+		$cols['number_answers'] = array(
+			'txt' => $this->pl->txt('cols_number_answers'),
+			'default' => true,
+			'width' => 'auto',
+			'sort_field' => 'number_answers'
+		);
 
 		return $cols;
 	}
@@ -65,16 +94,17 @@ class ilAdvancedTestStatisticsAvgTableGUI extends ilTable2GUI {
 
 	public function parseData() {
 		$rows = array();
+		$data = $this->constructArray();
 
-
-			$row['question_id'] = '131';
-			$row['question_title'] = 'questiontitle';
-			$row['points'] = '13 points';
-			$row['percentage'] = '15%';
-			$row['number_answers'] = '2 answers';
-
+		foreach ($data as $k => $dat) {
+			$row['question_id'] = $k;
+			$row['question_title'] = $dat[0];
+			$row['points'] = $dat[1];
+			$row['percentage'] = $dat[2];
+			$row['number_answers'] = $dat[3];
 
 			$rows[] = $row;
+		}
 
 		$this->setData($rows);
 
@@ -86,28 +116,18 @@ class ilAdvancedTestStatisticsAvgTableGUI extends ilTable2GUI {
 	 * @param array $a_set
 	 */
 	public function fillRow($a_set) {
-		foreach ($this->getSelectableColumns() as $k => $v){
-			if($this->isColumnSelected($k)){
-				if($a_set[$k]) {
+		foreach ($this->getSelectableColumns() as $k => $v) {
+			if ($this->isColumnSelected($k)) {
+				if ($a_set[$k]) {
 					$this->tpl->setCurrentBlock('td');
-					$this->tpl->setVariable('VALUE',$a_set[$k]);
+					$this->tpl->setVariable('VALUE', $a_set[$k]);
 					$this->tpl->parseCurrentBlock();
-				}
-				else{
+				} else {
 					$this->tpl->setCurrentBlock('td');
-					$this->tpl->setVariable('VALUE','&nbsp;');
+					$this->tpl->setVariable('VALUE', '&nbsp;');
 					$this->tpl->parseCurrentBlock();
-
 				}
 			}
 		}
 	}
-
-
-
-
-
-
-
-
 }

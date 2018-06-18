@@ -191,7 +191,6 @@ class ilAdvancedTestStatisticsFilterFormGUI extends ilPropertyFormGUI {
 		$values['avg_result_passed_run_two'] = $this->filterFields->isAvgResultPassedRunTwo();
 		$values['avg_result_finished_run_two'] = $this->filterFields->isAvgResultsFinishedRunTwo();
 
-		$values['user[]'] = 231;
 
 
 		$this->setValuesByArray($values);

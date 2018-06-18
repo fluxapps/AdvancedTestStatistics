@@ -18,13 +18,13 @@
 	});
 </script>
 
-<form>
+<form method="post" action="{HREF}">
 <!-- BEGIN TRIGGER -->
 <table id="input_collection">
 
-<tr class="multipleinput_old">
+<tr class="multipleinput_old" style="display:none">
 <td>
-<select>
+<select disabled>
   <!-- BEGIN OPTIONS_OLD -->
   {SELECT_NAME_OLD}<option value = "{OPTION_VALUE_OLD}"> {OPTION_OLD} </option>
   <!-- END OPTIONS_OLD -->
@@ -85,7 +85,7 @@
 <td>
 <select>
   <!-- BEGIN OPTIONS -->
-  {SELECT_NAME}<option value = "{OPTION_VALUE}"> {OPTION} </option>
+  {SELECT_NAME}<option value = "{OPTION_VALUE}" name="{OPTION_VALUE}"> {OPTION} </option>
   <!-- END OPTIONS -->
 </select>
 </td>
@@ -133,16 +133,15 @@
 </td>
 
 <td>
-<button type="button" name="Trigger"> Trigger </button>
+<button type="button" name="Trigger" href="{HREF_TRIGGER}"> Trigger </button>
 </td>
 <td>
-<button type="button" name="Copy"> Copy </button>
+<button type="button" name="Copy" href="{HREF_COPY}"> Copy </button>
 </td>
 
 </tr>
 <!-- END TRIGGER -->
 </table>
 
-
-<button> <a href="{HREF}" style="text-decoration: none"> SUBMIT </a> </button>
+<input id="button_submit" type="submit" value="Submit">
 </form>
