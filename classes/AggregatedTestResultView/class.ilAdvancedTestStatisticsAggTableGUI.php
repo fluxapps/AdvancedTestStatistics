@@ -60,6 +60,12 @@ class ilAdvancedTestStatisticsAggTableGUI extends ilTable2GUI {
 		$avg_result_finished = $class->getAverageResultFinishedTests($id,$this->ref_id);
 
 		$ext_fields = xatsExtendedStatisticsFields::where(array( 'ref_id' => $this->ref_id ))->first();
+		if ($ext_fields == NULL){
+			$ext_fields = new xatsExtendedStatisticsFields();
+			$ext_fields->setRefId($this->ref_id);
+			$ext_fields->create();
+		}
+
 
 		$data['Total number of participants who started the test'] = $class->getTotalNumberStartedTest();
 		$data['Total finished tests (Participants that used up all possible passes)'] = $class->getTotalFinishedTests($this->ref_id);
