@@ -89,6 +89,7 @@ class ilAdvancedTestStatisticsFilterFormGUI extends ilPropertyFormGUI {
 		$this->setFormAction($this->ctrl->getFormAction($this->parent_gui));
 		$this->initButtons();
 
+
 		$c = new ilFormSectionHeaderGUI();
 		$c->setTitle("FilterStatistics");
 		$this->addItem($c);

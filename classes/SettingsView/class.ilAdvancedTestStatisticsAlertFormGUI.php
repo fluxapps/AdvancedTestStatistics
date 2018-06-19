@@ -69,7 +69,7 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 
 		foreach ($this->extendedFields as $extendedField){
 		$this->tpl->setCurrentBlock('OPTIONS');
-		$this->tpl->setVariable('SELECT_NAME','Select one');
+		//$this->tpl->setVariable('SELECT_NAME','Select one');
 		$this->tpl->setVariable('OPTION_VALUE', $extendedField);
 		$this->tpl->setVariable('OPTION', $extendedField);
 		$this->tpl->parseCurrentBlock();
@@ -77,7 +77,7 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 
 		foreach ($this->operators as $operator){
 			$this->tpl->setCurrentBlock('OPTIONS1');
-			$this->tpl->setVariable('SELECT_NAME1','Select one');
+		//	$this->tpl->setVariable('SELECT_NAME1','Select one');
 			$this->tpl->setVariable('OPTION_VALUE1', $operator);
 			$this->tpl->setVariable('OPTION1', $operator);
 			$this->tpl->parseCurrentBlock();
@@ -88,7 +88,7 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 
 		foreach ($this->extendedFields as $extendedField){
 			$this->tpl->setCurrentBlock('OPTIONS2');
-			$this->tpl->setVariable('SELECT_NAME2','Select one');
+		//	$this->tpl->setVariable('SELECT_NAME2','Select one');
 			$this->tpl->setVariable('OPTION_VALUE2', $extendedField);
 			$this->tpl->setVariable('OPTION2', $extendedField);
 			$this->tpl->parseCurrentBlock();
@@ -96,7 +96,7 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 
 		foreach ($this->operators as $operator){
 			$this->tpl->setCurrentBlock('OPTIONS3');
-			$this->tpl->setVariable('SELECT_NAME3','Select one');
+		//	$this->tpl->setVariable('SELECT_NAME3','Select one');
 			$this->tpl->setVariable('OPTION_VALUE3', $operator);
 			$this->tpl->setVariable('OPTION3', $operator);
 			$this->tpl->parseCurrentBlock();
@@ -119,6 +119,35 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 		$this->tpl->setVariable("HREF",$link);
 
 		return $this->tpl->get();
+	}
+
+
+	public function save() {
+		if (!$this->fill()) {
+			return false;
+		}
+
+		$triggers = xatsTriggers::get();
+		foreach ($triggers as $trigger){
+			$trigger->delete();
+		}
+
+
+
+
+
+		return true;
+	}
+
+
+	public function fill() {
+		if (!$this->checkInput()) {
+			return false;
+		}
+
+
+
+		return true;
 	}
 
 }

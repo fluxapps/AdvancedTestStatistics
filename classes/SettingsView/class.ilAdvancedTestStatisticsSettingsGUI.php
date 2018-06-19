@@ -98,8 +98,17 @@ class ilAdvancedTestStatisticsSettingsGUI {
 
 	}
 
+
 	public function createTrigger(){
-	print_r("here");
+		$form = new ilAdvancedTestStatisticsAlertFormGUI($this);
+
+		$form->setValuesByPost();
+
+		if($form->save()){
+			ilUtil::sendSuccess($this->pl->txt('system_account_msg_success'),true);
+			$this->ctrl->redirect(new ilAdvancedTestStatisticsSettingsGUI, ilAdvancedTestStatisticsSettingsGUI::CMD_DISPLAY_TRIGGERS);
+		}
+		$this->tpl->setContent($form->getHTML());
 
 	}
 
