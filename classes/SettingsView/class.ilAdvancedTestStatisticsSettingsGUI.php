@@ -40,6 +40,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 		$this->tabs = $ilTabs;
 		$this->pl = ilAdvancedTestStatisticsPlugin::getInstance();
 		$this->ctrl->saveParameterByClass($this,'ref_id');
+		$this->ctrl->setParameterByClass(ilAdvancedTestStatisticsSettingsGUI::class,'ref_id',$this->ref_id);
 		$this->test = ilObjectFactory::getInstanceByRefId($this->ref_id);
 	}
 
@@ -60,7 +61,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 		$this->initHeader();
 
 		$form = new ilAdvancedTestStatisticsAlertFormGUI($this);
-		$this->tpl->setContent($form->setContent());
+		$this->tpl->setContent($form->getHTML());
 
 		$this->tpl->show();
 

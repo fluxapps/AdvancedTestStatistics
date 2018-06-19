@@ -38,7 +38,7 @@ class ilAlertFormGUI extends ilPropertyFormGUI {
 		$te = new ilFormSectionHeaderGUI();
 		$te->setTitle($this->pl->txt('Alerts'));
 		$this->addItem($te);
-		$te = new MultiLineInputGUI($this->pl->txt('Trigger'), 'triggers', self::FIELD_NAME_SCALE);
+		$te = new MultiLineInputGUI($this->pl->txt('Trigger'), 'triggers','triggers');
 		$te->setPlaceholderValue($this->pl->txt('multinput_value'));
 		$te->setPlaceholderTitle($this->pl->txt('multinput_title'));
 		$te->setDescription($this->pl->txt('multinput_description'));

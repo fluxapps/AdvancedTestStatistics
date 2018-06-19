@@ -16,13 +16,21 @@ class MultiLineInputGUI extends ilCustomInputGUI {
 	 */
 	protected $field_name;
 	/**
-	 * @var string
+	 * @var array
 	 */
-	protected $placeholder_value = "Value";
+	protected $operators = array('>', '<', '>=', '<=', '!=', '==');
 	/**
-	 * @var string
+	 * @var array
 	 */
-	protected $placeholder_title = 'Title';
+	protected $extendedFields = array(
+		"avg_points_finished" => "Average Points finished tests",
+		"avg_result_passed" => "Average result passed tests",
+		"avg_result_finished" => "Average result(%) finished tests",
+		"avg_result_finished_run_one" => "Average result(%) passed tests (Run 1)",
+		"avg_result_passed_run_one" => "Average result(%) finished tests (Run 1)",
+		"avg_result_passed_run_two" => "Average result(%) passed tests (Run 2)",
+		"avg_result_finished_run_two" => "Average result(%) finished tests (Run 2)"
+	);
 	/**
 	 * @var int
 	 */
@@ -39,6 +47,9 @@ class MultiLineInputGUI extends ilCustomInputGUI {
 	 * @param        $field_name
 	 */
 	public function __construct($title, $post_var, $field_name) {
+		global $ilCtrl;
+
+		$this->ctrl = $ilCtrl;
 		parent::__construct($title, $post_var);
 		$this->setFieldName($field_name);
 	}
@@ -48,40 +59,59 @@ class MultiLineInputGUI extends ilCustomInputGUI {
 	 * @return string
 	 */
 	public function getHtml() {
-		$pl = new ilAdvancedTestStatisticsPlugin();
-		$tpl = $pl->getTemplate('tpl.multi_line_input.html', true, true);
-		$tpl->setVariable('LOCK_CSS', $this->getDisabled() ? 'locked' : '');
-		if ($this->getDisabled()) {
-			$this->setInfo($pl->txt('locked'));
-		}
-		if (count($this->getValues()) > 0) {
-			foreach ($this->getValues() as $id => $value) {
-				$tpl->setCurrentBlock('input');
-				$tpl->setVariable('VALUE_N', $this->getFieldName() . '_old[value][' . $id . ']');
-				$tpl->setVariable('VALUE_V', $value['value']);
-				$tpl->setVariable('TITLE_N', $this->getFieldName() . '_old[title][' . $id . ']');
-				$tpl->setVariable('TITLE_V', $value['title']);
-				$tpl->setVariable('DISABLED', $this->getDisabled() ? 'disabled' : '');
-				$tpl->setVariable('POSTVAR', $this->getPostVar());
-				$tpl->setVariable('LOCK_CSS', $this->getDisabled() ? 'locked' : '');
-				$tpl->setVariable('ID', $id);
-				$tpl->parseCurrentBlock();
-			}
-		}
-		if (!$this->getDisabled()) {
-			$tpl->setCurrentBlock('new_input');
-			$tpl->setVariable('VALUE_N_NEW', $this->getFieldName() . '_new[value][]');
-			$tpl->setVariable('TITLE_N_NEW', $this->getFieldName() . '_new[title][]');
-			$tpl->setVariable('DISABLED_N', $this->getDisabled() ? 'disabled' : '');
-			$tpl->setVariable('PLACEHOLDER_VALUE', $this->getPlaceholderValue());
-			//            $tpl->setVariable('DEFAULT_VALUE', $this->getDefaultValue());
-			$tpl->setVariable('PLACEHOLDER_TITLE', $this->getPlaceholderTitle());
-			$tpl->setVariable('LOCK_CSS', $this->getDisabled() ? 'locked' : '');
-			$tpl->parseCurrentBlock();
-			$tpl->setVariable("DESCRIPTION", $this->getDescription());
+		$this->tpl = new ilTemplate("tpl.alert_template.html", true ,true, './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/AdvancedTestStatistics');
+
+		foreach ($this->extendedFields as $extendedField){
+			$this->tpl->setCurrentBlock('OPTIONS');
+			//$this->tpl->setVariable('SELECT_NAME','Select one');
+			$this->tpl->setVariable('OPTION_VALUE', $this->getFieldName() . $extendedField);
+			$this->tpl->setVariable('OPTION', $extendedField);
+			$this->tpl->parseCurrentBlock();
 		}
 
-		return $tpl->get();
+		foreach ($this->operators as $operator){
+			$this->tpl->setCurrentBlock('OPTIONS1');
+			//	$this->tpl->setVariable('SELECT_NAME1','Select one');
+			$this->tpl->setVariable('OPTION_VALUE1', $this->getFieldName() . '_new[option_two][]');
+			$this->tpl->setVariable('OPTION1', $operator);
+			$this->tpl->parseCurrentBlock();
+		}
+
+		$this->tpl->setVariable('VALUE', 'Value');
+
+		foreach ($this->extendedFields as $extendedField){
+			$this->tpl->setCurrentBlock('OPTIONS2');
+			//	$this->tpl->setVariable('SELECT_NAME2','Select one');
+			$this->tpl->setVariable('OPTION_VALUE2', $extendedField);
+			$this->tpl->setVariable('OPTION2', $extendedField);
+			$this->tpl->parseCurrentBlock();
+		}
+
+		foreach ($this->operators as $operator){
+			$this->tpl->setCurrentBlock('OPTIONS3');
+			//	$this->tpl->setVariable('SELECT_NAME3','Select one');
+			$this->tpl->setVariable('OPTION_VALUE3', $operator);
+			$this->tpl->setVariable('OPTION3', $operator);
+			$this->tpl->parseCurrentBlock();
+		}
+
+
+		$this->tpl->parseCurrentBlock();
+		$user = new ilTextInputGUI("user", "login");
+		$user->setDataSource($this->ctrl->getLinkTargetByClass(array(
+			ilUIPluginRouterGUI::class,
+			ilAdvancedTestStatisticsPlugin::class
+		), ilAdvancedTestStatisticsPlugin::CMD_ADD_USER_AUTO_COMPLETE, "", true));
+		$user->setInfo("User");
+
+
+		$html = $user->getToolbarHTML();
+		$this->tpl->setVariable("SEARCHFIELD",$html);
+
+		$link = $this->ctrl->getLinkTargetByClass(ilAdvancedTestStatisticsSettingsGUI::class, ilAdvancedTestStatisticsSettingsGUI::CMD_CREATE_TRIGGER);
+		$this->tpl->setVariable("HREF",$link);
+
+		return $this->tpl->get();
 	}
 
 

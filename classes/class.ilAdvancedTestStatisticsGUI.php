@@ -23,7 +23,7 @@ class ilAdvancedTestStatisticsGUI {
 		$this->ctrl = $ilCtrl;
 		$this->tpl = $tpl;
 		$this->ref_id = $_GET['ref_id'];
-		$this->obj_id = ilObjectFactory::getInstanceByRefId($this->ref_id);
+		//$this->obj = ilObjectFactory::getInstanceByRefId($this->ref_id);
 
 	}
 

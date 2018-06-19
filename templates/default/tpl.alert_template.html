@@ -18,7 +18,6 @@
 	});
 </script>
 
-<form method="post" action="{HREF}">
 <!-- BEGIN TRIGGER -->
 <table id="input_collection">
 
@@ -69,6 +68,12 @@
 {SEARCHFIELD_OLD}
 </td>
 
+<td>
+<button type="button" name="Trigger" href="{HREF_TRIGGER}"> Trigger </button>
+</td>
+<td>
+<button type="button" name="Copy" href="{HREF_COPY}"> Copy </button>
+</td>
 <td class="{LOCK_CSS}">
 <a><span class="glyphicon glyphicon-minus delete_button" aria-hidden="true"></span></a>
 </td>
@@ -81,31 +86,38 @@
 </td>
 </tr>
 
+
+
+
+
+
 <tr class="multipleinput_new">
 <td>
-<select>
+<label for="option1"> Trigger </label>
+<select name="OPTION_ONE" id="option1">
   <!-- BEGIN OPTIONS -->
-  {SELECT_NAME}<option value = "{OPTION_VALUE}" name="{OPTION_VALUE}" > {OPTION} </option>
+  <option value = "{OPTION_VALUE}" name="{OPTION_VALUE}" > {OPTION} </option>
   <!-- END OPTIONS -->
 </select>
 </td>
 
 <td>
-<select>
+<label for="option2"> Operator </label>
+<select name="OPTION_TWO" id="option2">
   <!-- BEGIN OPTIONS1 -->
-  {SELECT_NAME1}<option value = "{OPTION_VALUE1}"> {OPTION1} </option>
+  <option value = "{OPTION_VALUE1}"> {OPTION1} </option>
   <!-- END OPTIONS1 -->
 </select>
 </td>
 
 <td>
-<!-- BEGIN VALUE -->
-<input type="number" name="value" value="{VALUE}">
-<!-- END VALUE -->
+<label for="numberone"> Value </label>
+<input type="number" name="valueOne" id="numberone">
 </td>
 
 <td>
-<select>
+<label for="option3"> Precondition </label>
+<select name="OPTION_THREE" id="option3">
   <!-- BEGIN OPTIONS2 -->
   {SELECT_NAME2}<option value = "{OPTION_VALUE2}"> {OPTION2} </option>
   <!-- END OPTIONS2 -->
@@ -113,7 +125,8 @@
 </td>
 
 <td>
-<select>
+<label for="option4"> Operator </label>
+<select name="OPTION_FOUR" id="option4">
   <!-- BEGIN OPTIONS3 -->
   {SELECT_NAME3}<option value = "{OPTION_VALUE3}"> {OPTION3} </option>
   <!-- END OPTIONS3 -->
@@ -121,27 +134,21 @@
 </td>
 
 <td>
-<input type="number" name="value" value="{VALUE1}">
+<label for="numbertwo"> Value </label>
+<input type="number" name="valueTwo" id="numbertwo">
 </td>
 
 <td>
-{SEARCHFIELD}
+<label for="search"> User </label>
+<a id="search">{SEARCHFIELD} </a>
 </td>
 
 <td>
 <a><span class="glyphicon glyphicon-plus add_button" aria-hidden="true"></span></a>
 </td>
 
-<td>
-<button type="button" name="Trigger" href="{HREF_TRIGGER}"> Trigger </button>
-</td>
-<td>
-<button type="button" name="Copy" href="{HREF_COPY}"> Copy </button>
-</td>
 
 </tr>
 <!-- END TRIGGER -->
 </table>
-
-<input id="button_submit" type="submit" value="Submit">
-</form>
+<div class="ilFormInfo">{DESCRIPTION}</div>

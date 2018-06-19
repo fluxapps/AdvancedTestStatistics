@@ -18,9 +18,7 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 	 * @var xatsFilter
 	 */
 	protected $object;
-
-	protected $operators = array('>', '<', '>=', '<=', '!=', '==');
-
+	protected $operators = array( '>', '<', '>=', '<=', '!=', '==' );
 	protected $extendedFields = array(
 		"avg_points_finished" => "Average Points finished tests",
 		"avg_result_passed" => "Average result passed tests",
@@ -30,8 +28,6 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 		"avg_result_passed_run_two" => "Average result(%) passed tests (Run 2)",
 		"avg_result_finished_run_two" => "Average result(%) finished tests (Run 2)"
 	);
-
-
 
 
 	/**
@@ -49,76 +45,26 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 		$this->parent_gui = $parent_gui;
 		$this->setFormAction($this->ctrl->getFormAction($this->parent_gui));
 
-		$this->ctrl->setParameterByClass(ilAdvancedTestStatisticsSettingsGUI::class,'ref_id',$this->ref_id);
 
 		parent::__construct();
 
-
-
-
+		$this->initForm();
 	}
 
 
-
-
-	public function setContent() {
-		$this->tpl = new ilTemplate("tpl.alert_template.html", true ,true, './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/AdvancedTestStatistics');
-
+	public function initForm() {
 		$this->setTarget('_top');
+		$this->initButtons();
+
+		$alerts = new ilAlertFormGUI();
+		$alerts->appendToForm($this);
+	}
 
 
-		foreach ($this->extendedFields as $extendedField){
-		$this->tpl->setCurrentBlock('OPTIONS');
-		//$this->tpl->setVariable('SELECT_NAME','Select one');
-		$this->tpl->setVariable('OPTION_VALUE', $extendedField);
-		$this->tpl->setVariable('OPTION', $extendedField);
-		$this->tpl->parseCurrentBlock();
-		}
-
-		foreach ($this->operators as $operator){
-			$this->tpl->setCurrentBlock('OPTIONS1');
-		//	$this->tpl->setVariable('SELECT_NAME1','Select one');
-			$this->tpl->setVariable('OPTION_VALUE1', $operator);
-			$this->tpl->setVariable('OPTION1', $operator);
-			$this->tpl->parseCurrentBlock();
-		}
-		$this->tpl->setCurrentBlock('VALUE');
-		$this->tpl->setVariable('VALUE', 'Value');
-		$this->tpl->parseCurrentBlock();
-
-		foreach ($this->extendedFields as $extendedField){
-			$this->tpl->setCurrentBlock('OPTIONS2');
-		//	$this->tpl->setVariable('SELECT_NAME2','Select one');
-			$this->tpl->setVariable('OPTION_VALUE2', $extendedField);
-			$this->tpl->setVariable('OPTION2', $extendedField);
-			$this->tpl->parseCurrentBlock();
-		}
-
-		foreach ($this->operators as $operator){
-			$this->tpl->setCurrentBlock('OPTIONS3');
-		//	$this->tpl->setVariable('SELECT_NAME3','Select one');
-			$this->tpl->setVariable('OPTION_VALUE3', $operator);
-			$this->tpl->setVariable('OPTION3', $operator);
-			$this->tpl->parseCurrentBlock();
-		}
-
-		$this->tpl->setVariable('VALUE1', 'Value');
-		$this->tpl->parseCurrentBlock();
-		$user = new ilTextInputGUI("user", "login");
-		$user->setDataSource($this->ctrl->getLinkTargetByClass(array(
-			ilUIPluginRouterGUI::class,
-			ilAdvancedTestStatisticsPlugin::class
-		), ilAdvancedTestStatisticsPlugin::CMD_ADD_USER_AUTO_COMPLETE, "", true));
-		$user->setInfo("User");
-		$this->addItem($user);
-
-		$html = $user->getToolbarHTML();
-		$this->tpl->setVariable("SEARCHFIELD",$html);
-
-		$link = $this->ctrl->getLinkTargetByClass(ilAdvancedTestStatisticsSettingsGUI::class, ilAdvancedTestStatisticsSettingsGUI::CMD_CREATE_TRIGGER);
-		$this->tpl->setVariable("HREF",$link);
-
-		return $this->tpl->get();
+	public function initButtons() {
+		$this->ctrl->setParameterByClass(ilAdvancedTestStatisticsGUI::class, 'ref_id', $this->ref_id);
+		$this->addCommandButton(ilAdvancedTestStatisticsSettingsGUI::CMD_CREATE_TRIGGER, $this->pl->txt('form_update'));
+		$this->addCommandButton(ilAdvancedTestStatisticsSettingsGUI::CMD_CANCEL, $this->pl->txt('form_cancel'));
 	}
 
 
@@ -128,13 +74,9 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 		}
 
 		$triggers = xatsTriggers::get();
-		foreach ($triggers as $trigger){
+		foreach ($triggers as $trigger) {
 			$trigger->delete();
 		}
-
-
-
-
 
 		return true;
 	}
@@ -145,9 +87,6 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 			return false;
 		}
 
-
-
 		return true;
 	}
-
 }
