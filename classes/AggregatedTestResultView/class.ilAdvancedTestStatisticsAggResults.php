@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Class ilAdvancedTestStatisticsAggResults
+ *
+ * This class includes all DB Queries and calculations for filling the table
+ */
 class ilAdvancedTestStatisticsAggResults {
 
 	public function __construct() {
@@ -17,6 +22,21 @@ class ilAdvancedTestStatisticsAggResults {
 	public function getTotalNumberStartedTest($ref_id) {
 		$testdata = new ilTestEvaluationData($this->object);
 		$participants = $testdata->getParticipants();
+
+		if($this->checkFilterInactive($ref_id) == 1){
+			$inactive_users = $this->getInactiveUsers();
+			foreach ($inactive_users as $inactive_user) {
+				foreach ($participants as $key => $participant){
+				if($inactive_user == $participant->getUserId()){
+					unset($participants[$key]);
+				}
+				}
+			}
+		}
+
+		if (!$participants) {
+			return 'Nothing to display';
+		}
 
 		return count($participants);
 	}
@@ -51,6 +71,10 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 
 		$rows = array_filter($rows);
 
+		if(!$rows){
+			return 'Nothing to display';
+		}
+
 		return count($rows);
 	}
 
@@ -70,19 +94,13 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 		while ($row = $ilDB->fetchObject($result)) {
 			//Filter inactive users if checkbox is set
 			if ($this->checkFilterInactive($ref_id) == 1) {
-				if (!key_exists($row['user_fi'], $inactive_usrs)) {
+				if (key_exists($row->userfi, $inactive_usrs)) {
 					preg_match("/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/", $row->started, $matches);
 					$epoch_1 = mktime($matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1]);
 					preg_match("/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/", $row->finished, $matches);
 					$epoch_2 = mktime($matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1]);
 					$times[$row->active_fi] += ($epoch_2 - $epoch_1);
 				}
-			} else {
-				preg_match("/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/", $row->started, $matches);
-				$epoch_1 = mktime($matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1]);
-				preg_match("/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/", $row->finished, $matches);
-				$epoch_2 = mktime($matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1]);
-				$times[$row->active_fi] += ($epoch_2 - $epoch_1);
 			}
 		}
 		$max_time = 0;
@@ -143,6 +161,10 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
 		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
 		$average_passed_time = $total_passed ? $total_passed_time / $total_passed : 0;
+
+		if(!$total_passed){
+			return 'Nothing to display';
+		}
 
 		return $total_passed;
 	}
@@ -359,6 +381,170 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 		}
 
 		return $average;
+	}
+
+
+	/**
+	 * @param $ref_id
+	 *
+	 * @return string
+	 */
+	public function getAverageResultPassedTestsRunOne($ref_id){
+
+		$eval =& $this->object->getCompleteEvaluationData();
+		$participants =& $eval->getParticipants();
+
+		$total_passed = 0;
+		$total_passed_reached = 0;
+		$total_passed_max = 0;
+
+		//Filter inactive users if checkbox is set
+		if ($this->checkFilterInactive($ref_id) == 1) {
+			$inactive_usrs = $this->getInactiveUsers();
+			foreach ($participants as $participant) {
+				if (key_exists($participant->getUserID(), $inactive_usrs)) {
+					$key = key($participant);
+					unset($key, $participants);
+				}
+			}
+		}
+
+		foreach ($participants as $userdata) {
+			if ($userdata->getPassed()) {
+				$total_passed ++;
+				$total_passed_reached += $userdata->getReached();
+				$total_passed_max += $userdata->getMaxpoints();
+			}
+		}
+		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
+		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
+
+		$result = ($average_passed_max/100) * $average_passed_reached;
+
+		return $result;
+	}
+
+
+	/**
+	 * @param $ref_id
+	 *
+	 * @return string
+	 */
+	public function getAverageResultPassedTestsRunTwo($ref_id){
+
+		$eval =& $this->object->getCompleteEvaluationData();
+		$participants =& $eval->getParticipants();
+
+		$total_passed = 0;
+		$total_passed_reached = 0;
+		$total_passed_max = 0;
+
+		//Filter inactive users if checkbox is set
+		if ($this->checkFilterInactive($ref_id) == 1) {
+			$inactive_usrs = $this->getInactiveUsers();
+			foreach ($participants as $participant) {
+				if (key_exists($participant->getUserID(), $inactive_usrs)) {
+					$key = key($participant);
+					unset($key, $participants);
+				}
+			}
+		}
+
+		foreach ($participants as $userdata) {
+			if ($userdata->getPassed()) {
+				$total_passed ++;
+				$total_passed_reached += $userdata->getReached();
+				$total_passed_max += $userdata->getMaxpoints();
+			}
+		}
+		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
+		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
+
+		$result = ($average_passed_max/100) * $average_passed_reached;
+
+		return $result;
+	}
+
+
+	/**
+	 * @param $ref_id
+	 *
+	 * @return string
+	 */
+	public function getAverageResultFinishedTestsRunOne($ref_id){
+
+		$eval =& $this->object->getCompleteEvaluationData();
+		$participants =& $eval->getParticipants();
+
+		$total_passed = 0;
+		$total_passed_reached = 0;
+		$total_passed_max = 0;
+
+		//Filter inactive users if checkbox is set
+		if ($this->checkFilterInactive($ref_id) == 1) {
+			$inactive_usrs = $this->getInactiveUsers();
+			foreach ($participants as $participant) {
+				if (key_exists($participant->getUserID(), $inactive_usrs)) {
+					$key = key($participant);
+					unset($key, $participants);
+				}
+			}
+		}
+
+		foreach ($participants as $userdata) {
+			if ($userdata->getPassed()) {
+				$total_passed ++;
+				$total_passed_reached += $userdata->getReached();
+				$total_passed_max += $userdata->getMaxpoints();
+			}
+		}
+		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
+		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
+		$result = ($average_passed_max/100) * $average_passed_reached;
+
+		return $result;
+	}
+
+
+	/**
+	 * @param $ref_id
+	 *
+	 * @return string
+	 */
+	public function getAverageResultFinishedTestsRunTwo($ref_id){
+
+		$eval =& $this->object->getCompleteEvaluationData();
+		$participants =& $eval->getParticipants();
+
+		$total_passed = 0;
+		$total_passed_reached = 0;
+		$total_passed_max = 0;
+
+		//Filter inactive users if checkbox is set
+		if ($this->checkFilterInactive($ref_id) == 1) {
+			$inactive_usrs = $this->getInactiveUsers();
+			foreach ($participants as $participant) {
+				if (key_exists($participant->getUserID(), $inactive_usrs)) {
+					$key = key($participant);
+					unset($key, $participants);
+				}
+			}
+		}
+
+		foreach ($participants as $userdata) {
+			if ($userdata->getPassed()) {
+				$total_passed ++;
+				$total_passed_reached += $userdata->getReached();
+				$total_passed_max += $userdata->getMaxpoints();
+			}
+		}
+		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
+		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
+
+		$result = ($average_passed_max/100) * $average_passed_reached;
+
+		return $result;
+
 	}
 
 

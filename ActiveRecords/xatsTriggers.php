@@ -78,6 +78,31 @@ class xatsTriggers extends ActiveRecord {
 	 * @con_length      8
 	 */
 	protected $user_id;
+	/**
+	 * @var int
+	 *
+	 * @con_has_field   true
+	 * @con_fieldtype   integer
+	 * @con_length      8
+	 */
+	protected $user_percentage;
+	/**
+	 * @var string
+	 *
+	 * @con_has_field   true
+	 * @con_fieldtype   text
+	 * @con_length      256
+	 */
+	protected $datesender;
+	/**
+	 * @var string
+	 *
+	 * @con_has_field   true
+	 * @con_fieldtype   text
+	 * @con_length      256
+	 */
+	protected $intervalls;
+
 
 
 	/**

@@ -66,15 +66,15 @@ class ilAdvancedTestStatisticsAggTableGUI extends ilTable2GUI {
 			$ext_fields->create();
 		}
 
-
-		$data['Total number of participants who started the test'] = $class->getTotalNumberStartedTest();
+		//Standard fields
+		$data['Total number of participants who started the test'] = $class->getTotalNumberStartedTest($this->ref_id);
 		$data['Total finished tests (Participants that used up all possible passes)'] = $class->getTotalFinishedTests($this->ref_id);
 		$data['Average test processing time'] = $class->getAvgTestTime($this->ref_id,$tst_id);
 		$data['Total passed tests'] = $class->getTotalPassedTests($this->ref_id);
 		$data['Average points of passed tests'] = $class->getAveragePointsPassedTests($this->ref_id);
 		$data['Average processing time of all passed tests'] = $class->getAverageTimePassedTests($this->ref_id);
 
-
+		//Custom Fields
 		//Check if the field is required and if there is data to display
 		if ($ext_fields->isAvgPointsFinished() == 1) {
 			if (!is_string($avg_points_finished)) {
@@ -101,16 +101,16 @@ class ilAdvancedTestStatisticsAggTableGUI extends ilTable2GUI {
 			}
 		}
 		if ($ext_fields->isAvgResultPassedRunOne() == 1) {
-			$data['Average result(%) passed tests (Run 1)'] = 'Average result(%) passed tests (Run 1)';
+			$data['Average result(%) passed tests (Run 1)'] = round($class->getAverageResultPassedTestsRunOne($this->ref_id)) . '%';
 		}
 		if ($ext_fields->isAvgResultFinishedRunOne() == 1) {
-			$data['Average result(%) finished tests (Run 1)'] = 'Average result(%) finished tests (Run 1)';
+			$data['Average result(%) finished tests (Run 1)'] = round($class->getAverageResultFinishedTestsRunOne($this->ref_id)). '%';
 		}
 		if ($ext_fields->isAvgResultPassedRunTwo() == 1) {
-			$data['Average result(%) passed tests (Run 2)'] = 'Average result(%) passed tests (Run 2)';
+			$data['Average result(%) passed tests (Run 2)'] = round($class->getAverageResultPassedTestsRunTwo($this->ref_id)). '%';
 		}
 		if ($ext_fields->isAvgResultsFinishedRunTwo() == 1) {
-			$data['Average result(%) finished tests (Run 2)'] = 'Average result(%) finished tests (Run 2)';
+			$data['Average result(%) finished tests (Run 2)'] = round($class->getAverageResultFinishedTestsRunTwo($this->ref_id)). '%';
 		}
 
 		return $data;

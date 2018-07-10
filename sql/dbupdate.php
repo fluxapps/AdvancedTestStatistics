@@ -13,3 +13,8 @@ xatsTriggers::updateDB();
 require_once './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/AdvancedTestStatistics/ActiveRecords/xatsExtendedStatisticsFields.php';
 xatsExtendedStatisticsFields::updateDB();
 ?>
+<#3>
+<?php
+require_once './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/AdvancedTestStatistics/ActiveRecords/xatsTriggers.php';
+xatsTriggers::updateDB();
+?>

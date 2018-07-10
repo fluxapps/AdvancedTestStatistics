@@ -98,7 +98,7 @@ class ilAdvancedTestStatisticsFilterFormGUI extends ilPropertyFormGUI {
 		$this->addItem($b);
 
 		//$check_prop = new ilCheckboxInputGUI("Custom Filter", "custom_filter");
-		$multiuserselectgui = new ilMultiUserSelectInputGUI("Users", "user");
+		$multiuserselectgui = new ilMultiUserSelectInputGUI("Filter Users from statistics", "user");
 		//$check_prop->addSubItem($multiuserselectgui);
 		//$this->addItem($check_prop);
 		$this->addItem($multiuserselectgui);
