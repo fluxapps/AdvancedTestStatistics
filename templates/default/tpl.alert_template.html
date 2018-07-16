@@ -45,26 +45,6 @@
 </td>
 
 <td>
-<select>
-  <!-- BEGIN OPTIONS2_OLD -->
-  {SELECT_NAME2_OLD}<option value = "{OPTION_VALUE2_OLD}"> {OPTION2_OLD} </option>
-  <!-- END OPTIONS2_OLD -->
-</select>
-</td>
-
-<td>
-<select>
-  <!-- BEGIN OPTIONS3_OLD -->
-  {SELECT_NAME3_OLD}<option value = "{OPTION_VALUE3_OLD}"> {OPTION3_OLD} </option>
-  <!-- END OPTIONS3_OLD -->
-</select>
-</td>
-
-<td>
-<input type="number" name="value" value="{VALUE1_OLD}">
-</td>
-
-<td>
 {SEARCHFIELD_OLD}
 </td>
 
@@ -116,29 +96,6 @@
 </td>
 
 <td>
-<label for="option3"> Precondition </label>
-<select name="OPTION_THREE" id="option3">
-  <!-- BEGIN OPTIONS2 -->
-  {SELECT_NAME2}<option value = "{OPTION_VALUE2}"> {OPTION2} </option>
-  <!-- END OPTIONS2 -->
-</select>
-</td>
-
-<td>
-<label for="option4"> Operator </label>
-<select name="OPTION_FOUR" id="option4">
-  <!-- BEGIN OPTIONS3 -->
-  {SELECT_NAME3}<option value = "{OPTION_VALUE3}"> {OPTION3} </option>
-  <!-- END OPTIONS3 -->
-</select>
-</td>
-
-<td>
-<label for="numbertwo"> Value </label>
-<input type="number" name="valueTwo" id="numbertwo">
-</td>
-
-<td>
 <label for="search"> User </label>
 <a id="search">{SEARCHFIELD} </a>
 </td>
@@ -161,7 +118,12 @@
 <option> Monthly </option>
 </select>
 </td>
-
+<td>
+<button type="button" name="Trigger" href="{HREF_TRIGGER}"> Trigger </button>
+</td>
+<td>
+<button type="button" name="Copy" href="{HREF_COPY}"> Copy </button>
+</td>
 <td>
 <a><span class="glyphicon glyphicon-plus add_button" aria-hidden="true"></span></a>
 </td>

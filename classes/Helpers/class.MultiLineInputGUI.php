@@ -79,21 +79,6 @@ class MultiLineInputGUI extends ilCustomInputGUI {
 
 		$this->tpl->setVariable('VALUE', 'Value');
 
-		foreach ($this->extendedFields as $extendedField){
-			$this->tpl->setCurrentBlock('OPTIONS2');
-			//	$this->tpl->setVariable('SELECT_NAME2','Select one');
-			$this->tpl->setVariable('OPTION_VALUE2', $extendedField);
-			$this->tpl->setVariable('OPTION2', $extendedField);
-			$this->tpl->parseCurrentBlock();
-		}
-
-		foreach ($this->operators as $operator){
-			$this->tpl->setCurrentBlock('OPTIONS3');
-			//	$this->tpl->setVariable('SELECT_NAME3','Select one');
-			$this->tpl->setVariable('OPTION_VALUE3', $operator);
-			$this->tpl->setVariable('OPTION3', $operator);
-			$this->tpl->parseCurrentBlock();
-		}
 
 
 		$this->tpl->parseCurrentBlock();
