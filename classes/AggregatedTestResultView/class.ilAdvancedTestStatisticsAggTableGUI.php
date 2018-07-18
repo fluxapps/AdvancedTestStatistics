@@ -52,7 +52,6 @@ class ilAdvancedTestStatisticsAggTableGUI extends ilTable2GUI {
 	public function construct_array() {
 		$data = array();
 		$class = new ilAdvancedTestStatisticsAggResults();
-		$tst_id = $class->getTstidforRefid($this->ref_id);
 		$id = $class->getTstidforRefid($this->ref_id);
 
 		$avg_points_finished = $class->getAveragePointsFinshedTests($id, $this->ref_id);
@@ -69,7 +68,7 @@ class ilAdvancedTestStatisticsAggTableGUI extends ilTable2GUI {
 		//Standard fields
 		$data['Total number of participants who started the test'] = $class->getTotalNumberStartedTest($this->ref_id);
 		$data['Total finished tests (Participants that used up all possible passes)'] = $class->getTotalFinishedTests($this->ref_id);
-		$data['Average test processing time'] = $class->getAvgTestTime($this->ref_id,$tst_id);
+		$data['Average test processing time'] = $class->getAvgTestTime($this->ref_id,$id);
 		$data['Total passed tests'] = $class->getTotalPassedTests($this->ref_id);
 		$data['Average points of passed tests'] = $class->getAveragePointsPassedTests($this->ref_id);
 		$data['Average processing time of all passed tests'] = $class->getAverageTimePassedTests($this->ref_id);

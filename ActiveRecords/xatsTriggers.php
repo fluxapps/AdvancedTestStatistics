@@ -242,6 +242,54 @@ class xatsTriggers extends ActiveRecord {
 
 
 	/**
+	 * @return int
+	 */
+	public function getUserPercentage() {
+		return $this->user_percentage;
+	}
+
+
+	/**
+	 * @param int $user_percentage
+	 */
+	public function setUserPercentage($user_percentage) {
+		$this->user_percentage = $user_percentage;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getDatesender() {
+		return $this->datesender;
+	}
+
+
+	/**
+	 * @param string $datesender
+	 */
+	public function setDatesender($datesender) {
+		$this->datesender = $datesender;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function getIntervalls() {
+		return $this->intervalls;
+	}
+
+
+	/**
+	 * @param string $intervalls
+	 */
+	public function setIntervalls($intervalls) {
+		$this->intervalls = $intervalls;
+	}
+
+
+	/**
 	 * @param int $user_id
 	 */
 	public function setUserId($user_id) {
