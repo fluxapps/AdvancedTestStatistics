@@ -49,7 +49,7 @@ class ilAdvancedTestStatisticsUIHookGUI extends ilUIHookPluginGUI {
 			if ($this->checkTest()) {
 				$tabs = $a_par['tabs'];
 				$this->ctrl->saveParameterByClass('ilAdvancedTestStatisticsGUI', 'ref_id');
-				//	$tabs->removeSubTab('tst_results_aggregated');
+					$tabs->removeSubTab('tst_results_aggregated');
 				$link = $this->ctrl->getLinkTargetByClass(array(
 					'ilUIPluginRouterGUI',
 					'ilAdvancedTestStatisticsGUI',

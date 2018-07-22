@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Class ilAdvancedTestStatisticsAlertFormGUI
+ *
+ * @ilCtrl_Calls    ilAdvancedTestStatisticsAlertFormGUI: ilAdvancedTestStatisticsPlugin
+ */
 class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 
 	/**
@@ -80,33 +85,44 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 
 		$te = new ilSelectInputGUI($this->pl->txt('form_trigger'), 'trigger');
 		$te->setOptions($this->extendedFields);
+		$te->setInfo('Trigger compared to value');
 		$te->setRequired(true);
 		$this->addItem($te);
 
 		$te = new ilSelectInputGUI($this->pl->txt('form_operator'), 'operator');
 		$te->setOptions($this->operators);
+		$te->setInfo('Operator for comparison');
 		$te->setRequired(false);
 		$this->addItem($te);
 
 		$te = new ilNumberInputGUI($this->pl->txt('form_value'), 'value');
 		$te->setRequired(true);
+		$te->setInfo('Value to be compared with trigger');
 		$te->allowDecimals(true);
 		$this->addItem($te);
 
-		$te = new ilTextInputGUI($this->pl->txt('form_user'),'user');
-		$te->setRequired(true);
-		$this->addItem($te);
+		$user = new ilTextInputGUI($this->pl->txt('form_user'), 'user');
+		$user->setDataSource($this->ctrl->getLinkTargetByClass(array(
+			ilUIPluginRouterGUI::class,
+			ilAdvancedTestStatisticsPlugin::class
+		), ilAdvancedTestStatisticsPlugin::CMD_ADD_USER_AUTO_COMPLETE, "", true));
+		$user->setInfo('User which will receive the notification');
+		$this->addItem($user);
+
 
 		$te = new ilNumberInputGUI($this->pl->txt('form_user_completed'),'user_completed');
 		$te->setRequired(true);
+		$te->setInfo('Condition how many users completed the test (%) of course members');
 		$this->addItem($te);
 
 		$te = new ilDateTimeInputGUI($this->pl->txt('form_date'),'date');
 		$te->setRequired(true);
+		$te->setInfo('The date when the trigger is checked for the first time');
 		$this->addItem($te);
 
 		$te = new ilSelectInputGUI($this->pl->txt('form_interval'),'interval');
 		$te->setRequired(true);
+		$te->setInfo('The interval within the trigger is checked');
 		$te->setOptions($this->interval_options);
 		$this->addItem($te);
 

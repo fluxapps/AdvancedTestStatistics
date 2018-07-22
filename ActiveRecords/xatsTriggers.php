@@ -53,30 +53,6 @@ class xatsTriggers extends ActiveRecord {
 	 * @con_fieldtype   integer
 	 * @con_length      8
 	 */
-	protected $precondition;
-	/**
-	 * @var int
-	 *
-	 * @con_has_field   true
-	 * @con_fieldtype   integer
-	 * @con_length      8
-	 */
-	protected $operator_two;
-	/**
-	 * @var int
-	 *
-	 * @con_has_field   true
-	 * @con_fieldtype   integer
-	 * @con_length      8
-	 */
-	protected $value_two;
-	/**
-	 * @var int
-	 *
-	 * @con_has_field   true
-	 * @con_fieldtype   integer
-	 * @con_length      8
-	 */
 	protected $user_id;
 	/**
 	 * @var int
@@ -102,6 +78,16 @@ class xatsTriggers extends ActiveRecord {
 	 * @con_length      256
 	 */
 	protected $intervalls;
+	/**
+	 * @var int
+	 *
+	 * @con_has_field   true
+	 * @con_fieldtype   integer
+	 * @con_length      8
+	 *
+	 */
+	protected $lastrun;
+
 
 
 
@@ -188,54 +174,6 @@ class xatsTriggers extends ActiveRecord {
 	/**
 	 * @return int
 	 */
-	public function getPrecondition() {
-		return $this->precondition;
-	}
-
-
-	/**
-	 * @param int $precondition
-	 */
-	public function setPrecondition($precondition) {
-		$this->precondition = $precondition;
-	}
-
-
-	/**
-	 * @return int
-	 */
-	public function getOperatorTwo() {
-		return $this->operator_two;
-	}
-
-
-	/**
-	 * @param int $operator_two
-	 */
-	public function setOperatorTwo($operator_two) {
-		$this->operator_two = $operator_two;
-	}
-
-
-	/**
-	 * @return int
-	 */
-	public function getValueTwo() {
-		return $this->value_two;
-	}
-
-
-	/**
-	 * @param int $value_two
-	 */
-	public function setValueTwo($value_two) {
-		$this->value_two = $value_two;
-	}
-
-
-	/**
-	 * @return int
-	 */
 	public function getUserId() {
 		return $this->user_id;
 	}
@@ -270,6 +208,22 @@ class xatsTriggers extends ActiveRecord {
 	 */
 	public function setDatesender($datesender) {
 		$this->datesender = $datesender;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getLastRun() {
+		return $this->lastrun;
+	}
+
+
+	/**
+	 * @param int $lastRun
+	 */
+	public function setLastRun($lastRun) {
+		$this->lastrun = $lastRun;
 	}
 
 

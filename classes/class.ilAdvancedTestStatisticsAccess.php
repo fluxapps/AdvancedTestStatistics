@@ -1,6 +1,10 @@
 <?php
 
-//TODO ACCESS CONTROL
+/**
+ * Class ilAdvancedTestStatisticsAccess
+ *
+ * @author Silas Stulz <sst@studer-raimann.ch>
+ */
 class ilAdvancedTestStatisticsAccess {
 
 	/**

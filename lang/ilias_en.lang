@@ -25,8 +25,18 @@ form_interval #:# Interval
 
 
 header_btn_add #:# Add Trigger
-system_account_msg_success #:# Successfull
+system_account_msg_success #:# Successful
 btn_back #:# Back
 list_edit_trigger #:# Edit Trigger
 list_delete_trigger #:# Delete Trigger
 list_copy_trigger #:# Copy Trigger
+list_trigger_trigger #:# Activate Trigger
+
+form_update #:# Update
+form_cancel #:# Cancel
+
+form_headtitle_new #:# New Trigger
+form_headtitle_old #:# Edit Trigger
+form_create #:# Create
+form_update #:# Update
+trigger_not_executed #:# Trigger not satisfied

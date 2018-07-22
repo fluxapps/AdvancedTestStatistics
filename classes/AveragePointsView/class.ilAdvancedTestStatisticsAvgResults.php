@@ -1,7 +1,9 @@
 <?php
 
-
-
+/**
+ * Class ilAdvancedTestStatisticsAvgResults
+ * @author Silas Stulz <sst@studer-raimann.ch>
+ */
 class ilAdvancedTestStatisticsAvgResults {
 
 	protected $object;

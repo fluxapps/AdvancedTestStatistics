@@ -29,3 +29,13 @@ btn_back #:# Zurück
 list_edit_trigger #:# Trigger bearbeiten
 list_delete_trigger #:# Trigger löschen
 list_copy_trigger #:# Trigger Kopieren
+list_trigger_trigger #:# Trigger aktivieren
+
+form_update #:# Update
+form_cancel #:# Cancel
+
+form_headtitle_new #:# Neuer Trigger
+form_headtitle_old #:# Trigger bearbeiten
+form_create #:# Erstellen
+form_update #:# Update
+trigger_not_executed #:# Trigger ist nicht erfüllt

@@ -2,6 +2,9 @@
 
 /**
  * Class ilAdvancedTestStatisticsAggGUI
+ *
+ * @author Silas Stulz <sst@studer-raimann.ch>
+ *
  * @ilCtrl_isCalledBy ilAdvancedTestStatisticsAggGUI: ilUIPluginRouterGUI, ilAdvancedTestStatisticsGUI
  */
 

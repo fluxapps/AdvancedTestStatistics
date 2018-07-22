@@ -11,7 +11,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 	const CMD_DISPLAY_FILTER = 'displayFilters';
 	const CMD_UPDATE_FILTER = 'updateFilter';
 
-	const CMD_TRIGGER_TRIGGER = 'trigger';
+	const CMD_TRIGGER_TRIGGER = 'executeTrigger';
 	const CMD_DISPLAY_TRIGGERS = 'displayAlerts';
 	const CMD_CREATE_TRIGGER = 'createTrigger';
 	const CMD_UPDATE_TRIGGER = 'updateTrigger';
@@ -53,8 +53,8 @@ class ilAdvancedTestStatisticsSettingsGUI {
 		$this->test = ilObjectFactory::getInstanceByRefId($this->ref_id);
 
 		$this->tree = $tree;
-		$ref_id_course = $this->tree->getParentId($_GET['ref_id']);
-		$this->usr_ids = ilCourseMembers::getData($ref_id_course);
+		$this->ref_id_course = $this->tree->getParentId($_GET['ref_id']);
+		$this->usr_ids = ilCourseMembers::getData($this->ref_id_course);
 
 	}
 
@@ -185,6 +185,14 @@ class ilAdvancedTestStatisticsSettingsGUI {
 	}
 
 
+	public function executeTrigger(){
+		if(!$this->trigger()){
+			ilUtil::sendFailure($this->pl->txt('trigger_not_executed'),true);
+			$this->ctrl->redirect($this,self::CMD_DISPLAY_TRIGGERS);
+		}
+	}
+
+
 	/*
 	 * Activate trigger
 	 */
@@ -256,9 +264,15 @@ class ilAdvancedTestStatisticsSettingsGUI {
 				break;
 		}
 
+		$sender = new ilAdvancedTestStatisticsSender();
+		try {
+		$sender->createNotification($this->ref_id_course,$trigger->getUserId(),$this->ref_id);
+		ilUtil::sendSuccess($this->pl->txt('system_account_msg_success_trigger'),true);
+		}
+		catch (Exception $exception){
 
-		
-
+		}
+		$this->ctrl->redirect($this,self::CMD_DISPLAY_TRIGGERS);
 
 
 	}
