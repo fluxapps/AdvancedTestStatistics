@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Class ilAdvancedTestStatisticsAvgTableGUI
+ * @author Silas Stulz <sst@studer-raimann.ch>
+ */
 class ilAdvancedTestStatisticsAvgTableGUI extends ilTable2GUI {
 
 	/**

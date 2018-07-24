@@ -3,6 +3,8 @@
 /**
  * Class ilAdvancedTestStatisticsAggResults
  *
+ * @author Silas Stulz <sst@studer-raimann.ch>
+ *
  * This class includes all DB Queries and calculations for filling the table
  */
 class ilAdvancedTestStatisticsAggResults {

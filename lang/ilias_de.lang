@@ -35,6 +35,7 @@ list_edit_trigger #:# Trigger bearbeiten
 list_delete_trigger #:# Trigger löschen
 list_copy_trigger #:# Trigger Kopieren
 list_trigger_trigger#:#Trigger auslösen
+trigger_not_executed #:# Trigger ist nicht erfüllt
 
 subtab_agg_test_results#:#Aggregierte Testergebnisse
 subtab_avg_points#:#Durchschnittliche Punktzahl

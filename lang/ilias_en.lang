@@ -29,12 +29,13 @@ form_headtitle_new#:#New Trigger
 form_headtitle_old#:#Edit Trigger
 
 header_btn_add #:# Add Trigger
-system_account_msg_success #:# Successfull
+system_account_msg_success #:# Successful
 btn_back #:# Back
 list_edit_trigger #:# Edit Trigger
 list_delete_trigger #:# Delete Trigger
 list_copy_trigger #:# Copy Trigger
 list_trigger_trigger#:#Manually Start Trigger
+trigger_not_executed #:# Trigger not satisfied
 
 subtab_agg_test_results#:#Aggregated Test Results
 subtab_avg_points#:#Average Points
@@ -48,3 +49,12 @@ avg_result_finished_run_one#:#Average result(%) passed tests (Run 1)
 avg_result_passed_run_one#:#Average result(%) finished tests (Run 1)
 avg_result_passed_run_two#:#Average result(%) passed tests (Run 2)
 avg_result_finished_run_two#:#Average result(%) finished tests (Run 2)
+list_trigger_trigger #:# Activate Trigger
+
+form_update #:# Update
+form_cancel #:# Cancel
+
+form_headtitle_new #:# New Trigger
+form_headtitle_old #:# Edit Trigger
+form_create #:# Create
+form_update #:# Update

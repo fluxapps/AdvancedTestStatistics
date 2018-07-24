@@ -41,7 +41,8 @@
       "../../../../../../../Services/Logging",
       "../../../../../../../Modules/Course",
       "../../../../../../../Modules/Group",
-      "../../../../../../../Modules/Test"
+      "../../../../../../../Modules/Test",
+      "../Notifications4Plugins"
     ]
   },
   "config": {
