@@ -27,6 +27,9 @@ form_update#:#Speichern
 form_create#:#Erstellen
 form_headtitle_new#:#Neuer Trigger
 form_headtitle_old#:#Trigger Bearbeiten
+form_title_filter_statistics#:#Statistiken Filtern
+form_title_extend_statistic_fields#:#Statistikfelder Erweitern
+form_title_extend_statistic_fields_info#:#Folgende Felder in Aggregierten Testergebnissen anbieten
 
 header_btn_add #:# Trigger Hinzufügen
 system_account_msg_success #:# Erfolgreich
@@ -43,9 +46,18 @@ subtab_filters#:#Filter
 subtab_alerts#:#Benachrichtigungen
 
 avg_points_finished#:#Durchschnittliche Punktzahl abgeschlossene Tests
-avg_result_passed#:#Durchschnittliches Resultat (%) bestandene Tests
+avg_points_passed#:#Durchschnittliche Punktzahl bestandene Tests
+avg_result_passed#:#Durchschnittliches Resultat bestandene Tests
 avg_result_finished#:#Durchschnittliches Resultat (%) abgeschlossene Tests
 avg_result_finished_run_one#:#Durchschnittliches Resultat (%) bestandene Tests (Durchlauf 1)
 avg_result_passed_run_one#:#Durchschnittliches Resultat (%) abgeschlossene Tests (Durchlauf 1)
 avg_result_passed_run_two#:#Durchschnittliches Resultat (%) bestandene Tests (Durchlauf 2)
 avg_result_finished_run_two#:#Durchschnittliches Resultat (%) abgeschlossene Tests (Durchlauf 2)
+avg_test_time#:#Durchschnittliche Zeit für Testdurchläufe
+avg_passed_test_time#:#Durchschnittliche Zeit für bestandene Testdurchläufe
+nr_participants_started#:#Gesamtanzahl der Teilnehmer, welche den Test begonnen haben
+nr_tests_finished#:#Gesamtanzahl abgeschlossener Tests (Teilnehmer, welche alle Durchläufe aufgebraucht haben)
+nr_tests_passed#:#Gesamtanzahl bestandener Tests
+
+input_dont_count_inactive#:#Inaktive Benutzer ignorieren
+input_filter_users#:#Benutzer aus Statistiken filtern

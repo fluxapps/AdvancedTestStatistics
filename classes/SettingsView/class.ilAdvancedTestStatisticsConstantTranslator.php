@@ -20,19 +20,19 @@ class ilAdvancedTestStatisticsConstantTranslator {
 
 	public static function getExtendedFieldforKey($key,$ref_id){
 		$extendedFields = array(
-			0 => "Average Points finished tests",
-			1 => "Average result passed tests",
-			2 => "Average result(%) finished tests",
-			3 => "Average result(%) passed tests (Run 1)",
-			4 => "Average result(%) finished tests (Run 1)",
-			5 => "Average result(%) passed tests (Run 2)",
-			6 => "Average result(%) finished tests (Run 2)",
-			7 =>'Total number of participants who started the test',
-			8 =>'Total finished tests (Participants that used up all possible passes)',
-			9 =>'Average test processing time',
-			10 =>'Total passed tests',
-			11 =>'Average points of passed tests',
-			12 => 'Average processing time of all passed tests',
+			0 => 'avg_points_finished',
+			1 => "avg_result_passed",
+			2 => "avg_result_finished",
+			3 => "avg_result_passed_run_one",
+			4 => "avg_result_finished_run_one",
+			5 => "avg_result_passed_run_two",
+			6 => "avg_result_finished_run_two",
+			7 =>'nr_participants_started',
+			8 =>'nr_tests_finished',
+			9 =>'avg_test_time',
+			10 =>'nr_tests_passed',
+			11 =>'avg_points_passed',
+			12 => 'avg_passed_test_time',
 		);
 
 		$test = new ilObjTest($ref_id);
@@ -43,7 +43,7 @@ class ilAdvancedTestStatisticsConstantTranslator {
 		}
 
 
-		return $extendedFields[$key];
+		return ilAdvancedTestStatisticsPlugin::getInstance()->txt($extendedFields[$key]);
 
 	}
 

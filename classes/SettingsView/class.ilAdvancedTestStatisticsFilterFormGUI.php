@@ -35,13 +35,13 @@ class ilAdvancedTestStatisticsFilterFormGUI extends ilPropertyFormGUI {
 	 * @var array
 	 */
 	public $extendedFields = array(
-		"avg_points_finished" => "Average Points finished tests",
-		"avg_result_passed" => "Average result (%) passed tests",
-		"avg_result_finished" => "Average result(%) finished tests",
-		"avg_result_finished_run_one" => "Average result(%) passed tests (Run 1)",
-		"avg_result_passed_run_one" => "Average result(%) finished tests (Run 1)",
-		"avg_result_passed_run_two" => "Average result(%) passed tests (Run 2)",
-		"avg_result_finished_run_two" => "Average result(%) finished tests (Run 2)"
+		"avg_points_finished",
+		"avg_result_passed",
+		"avg_result_finished",
+		"avg_result_finished_run_one",
+		"avg_result_passed_run_one",
+		"avg_result_passed_run_two",
+		"avg_result_finished_run_two",
 	);
 
 
@@ -91,26 +91,26 @@ class ilAdvancedTestStatisticsFilterFormGUI extends ilPropertyFormGUI {
 
 
 		$c = new ilFormSectionHeaderGUI();
-		$c->setTitle("FilterStatistics");
+		$c->setTitle($this->pl->txt("form_title_filter_statistics"));
 		$this->addItem($c);
 
-		$b = new ilCheckboxInputGUI("Do not count inactive users", "inactive");
+		$b = new ilCheckboxInputGUI($this->pl->txt("input_dont_count_inactive"), "inactive");
 		$this->addItem($b);
 
 		//$check_prop = new ilCheckboxInputGUI("Custom Filter", "custom_filter");
-		$multiuserselectgui = new ilMultiUserSelectInputGUI("Filter Users from statistics", "user");
+		$multiuserselectgui = new ilMultiUserSelectInputGUI($this->pl->txt("input_filter_users"), "user");
 		//$check_prop->addSubItem($multiuserselectgui);
 		//$this->addItem($check_prop);
 		$this->addItem($multiuserselectgui);
 
 
 		$c = new ilFormSectionHeaderGUI();
-		$c->setTitle("Extend Statistic Fields");
-		$c->setInfo("Make the following fields available in aggregated test results");
+		$c->setTitle($this->pl->txt("form_title_extend_statistic_fields"));
+		$c->setInfo($this->pl->txt("form_title_extend_statistic_fields_info"));
 		$this->addItem($c);
 
-		foreach ($this->extendedFields as $key => $value) {
-			$c = new ilCheckboxInputGUI($value, $key);
+		foreach ($this->extendedFields as $value) {
+			$c = new ilCheckboxInputGUI($this->pl->txt($value), $value);
 			$this->addItem($c);
 		}
 		$this->fillForm();

@@ -66,50 +66,50 @@ class ilAdvancedTestStatisticsAggTableGUI extends ilTable2GUI {
 		}
 
 		//Standard fields
-		$data['Total number of participants who started the test'] = $class->getTotalNumberStartedTest($this->ref_id);
-		$data['Total finished tests (Participants that used up all possible passes)'] = $class->getTotalFinishedTests($this->ref_id);
-		$data['Average test processing time'] = $class->getAvgTestTime($this->ref_id,$id);
-		$data['Total passed tests'] = $class->getTotalPassedTests($this->ref_id);
-		$data['Average points of passed tests'] = $class->getAveragePointsPassedTests($this->ref_id);
-		$data['Average processing time of all passed tests'] = $class->getAverageTimePassedTests($this->ref_id);
+		$data['nr_participants_started'] = $class->getTotalNumberStartedTest($this->ref_id);
+		$data['nr_tests_finished'] = $class->getTotalFinishedTests($this->ref_id);
+		$data['avg_test_time'] = $class->getAvgTestTime($this->ref_id,$id);
+		$data['nr_tests_passed'] = $class->getTotalPassedTests($this->ref_id);
+		$data['avg_points_passed'] = $class->getAveragePointsPassedTests($this->ref_id);
+		$data['avg_passed_test_time'] = $class->getAverageTimePassedTests($this->ref_id);
 
 		//Custom Fields
 		//Check if the field is required and if there is data to display
 		if ($ext_fields->isAvgPointsFinished() == 1) {
 			if (!is_string($avg_points_finished)) {
-				$data['Average points finished tests'] = round($avg_points_finished, 2);
+				$data['avg_points_finished'] = round($avg_points_finished, 2);
 			} else {
-				$data['Average points finished tests'] = $avg_points_finished;
+				$data['avg_points_finished'] = $avg_points_finished;
 			}
 		}
 
 		if ($ext_fields->isAvgResultPassed() == 1) {
 			if (!is_string($avg_result_passed)) {
-				$data['Average result (%) passed tests'] = round($avg_result_passed, 2) . "%";
+				$data['avg_result_passed'] = round($avg_result_passed, 2) . "%";
 			} else {
-				$data['Average result (%) passed tests'] = $avg_result_passed;
+				$data['avg_result_passed'] = $avg_result_passed;
 			}
 		}
 
 		if ($ext_fields->isAvgResultFinished() == 1) {
 			if (!is_string($avg_result_finished)){
-			$data['Average result(%) finished tests'] = round($avg_result_finished, 2) . "%";
+			$data['avg_result_finished'] = round($avg_result_finished, 2) . "%";
 			}
 			else{
-				$data['Average result(%) finished tests'] = $avg_result_finished;
+				$data['avg_result_finished'] = $avg_result_finished;
 			}
 		}
 		if ($ext_fields->isAvgResultPassedRunOne() == 1) {
-			$data['Average result(%) passed tests (Run 1)'] = round($class->getAverageResultPassedTestsRunOne($this->ref_id)) . '%';
+			$data['avg_result_finished_run_one'] = round($class->getAverageResultPassedTestsRunOne($this->ref_id)) . '%';
 		}
 		if ($ext_fields->isAvgResultFinishedRunOne() == 1) {
-			$data['Average result(%) finished tests (Run 1)'] = round($class->getAverageResultFinishedTestsRunOne($this->ref_id)). '%';
+			$data['avg_result_passed_run_one'] = round($class->getAverageResultFinishedTestsRunOne($this->ref_id)). '%';
 		}
 		if ($ext_fields->isAvgResultPassedRunTwo() == 1) {
-			$data['Average result(%) passed tests (Run 2)'] = round($class->getAverageResultPassedTestsRunTwo($this->ref_id)). '%';
+			$data['avg_result_passed_run_two'] = round($class->getAverageResultPassedTestsRunTwo($this->ref_id)). '%';
 		}
 		if ($ext_fields->isAvgResultsFinishedRunTwo() == 1) {
-			$data['Average result(%) finished tests (Run 2)'] = round($class->getAverageResultFinishedTestsRunTwo($this->ref_id)). '%';
+			$data['avg_result_finished_run_two'] = round($class->getAverageResultFinishedTestsRunTwo($this->ref_id)). '%';
 		}
 
 		return $data;
@@ -144,7 +144,7 @@ class ilAdvancedTestStatisticsAggTableGUI extends ilTable2GUI {
 		$rows = array();
 		$data = $this->construct_array();
 		foreach ($data as $k => $v) {
-			$row['result'] = $k;
+			$row['result'] = $this->pl->txt($k);
 			$row['value'] = $v;
 
 			$rows[] = $row;
