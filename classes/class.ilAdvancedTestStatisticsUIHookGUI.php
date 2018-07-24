@@ -14,16 +14,21 @@ class ilAdvancedTestStatisticsUIHookGUI extends ilUIHookPluginGUI {
 	 */
 	protected $ctrl;
 	/**
+	 * @var ilTemplate
+	 */
+	protected $tpl;
+	/**
 	 * @var ilAdvancedTestStatisticsPlugin
 	 */
 	protected $pl;
 
 
 	public function __construct() {
-		global $ilCtrl;
+		global $ilCtrl, $tpl;
 
 		$this->pl = ilAdvancedTestStatisticsPlugin::getInstance();
 		$this->ctrl = $ilCtrl;
+		$this->tpl = $tpl;
 		$this->ref_id = $_GET['ref_id'];
 		$this->access = new ilAdvancedTestStatisticsAccess($this->ref_id);
 	}
@@ -47,35 +52,55 @@ class ilAdvancedTestStatisticsUIHookGUI extends ilUIHookPluginGUI {
 		 */
 		if ($a_part == 'sub_tabs') {
 			if ($this->checkTest()) {
+			    $subtabs = array('subtab_aggTestResults', 'subtab_avg_points');
+
 				$tabs = $a_par['tabs'];
-				$this->ctrl->saveParameterByClass('ilAdvancedTestStatisticsGUI', 'ref_id');
-				//	$tabs->removeSubTab('tst_results_aggregated');
+                $tabs->removeSubTab('tst_results_aggregated');
+
+                // aggTestResults
+                $this->ctrl->saveParameterByClass('ilAdvancedTestStatisticsGUI', 'ref_id');
 				$link = $this->ctrl->getLinkTargetByClass(array(
 					'ilUIPluginRouterGUI',
 					'ilAdvancedTestStatisticsGUI',
 					'ilAdvancedTestStatisticsAggGUI'
 				));
-				$tabs->addSubTab('aggTestResults', 'Aggregated Test Results', $link);
+				$tabs->addSubTab('aggTestResults', $this->pl->txt('subtab_agg_test_results'), $link);
+
+				// avg_points
 				$link = $this->ctrl->getLinkTargetByClass(array(
 					'ilUIPluginRouterGUI',
 					'ilAdvancedTestStatisticsGUI',
 					'ilAdvancedTestStatisticsAvgGUI'
 				));
-				$tabs->addSubTab('avg_points', 'Average Points', $link);
+				$tabs->addSubTab('avg_points', $this->pl->txt('subtab_avg_points'), $link);
+
+
 				if ($this->access->hasCurrentUserAlertAccess()) {
+				    $subtabs = array_merge($subtabs, array('subtab_filter', 'subtab_alerts'));
+
+				    // filter
 					$link = $this->ctrl->getLinkTargetByClass(array(
 						'ilUIPluginRouterGUI',
 						'ilAdvancedTestStatisticsGUI',
 						'ilAdvancedTestStatisticsSettingsGUI'
 					), ilAdvancedTestStatisticsSettingsGUI::CMD_DISPLAY_FILTER);
-					$tabs->addSubTab("filter", "Filters", $link);
+					$tabs->addSubTab("filter", $this->pl->txt('subtab_filters'), $link);
+
+					// alerts
 					$link = $this->ctrl->getLinkTargetByClass(array(
 						'ilUIPluginRouterGUI',
 						'ilAdvancedTestStatisticsGUI',
 						'ilAdvancedTestStatisticsSettingsGUI'
 					), ilAdvancedTestStatisticsSettingsGUI::CMD_DISPLAY_TRIGGERS);
-					$tabs->addSubTab("alerts", "Alerts", $link);
+					$tabs->addSubTab("alerts", $this->pl->txt('subtab_alerts'), $link);
 				}
+
+                // deactivate tabs via js
+                $code = '';
+				foreach ($subtabs as $subtab) {
+				    $code .= "$('#$subtab').removeClass('active');";
+                }
+                $this->tpl->addOnLoadCode($code);
 			}
 		}
 	}

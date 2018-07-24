@@ -22,6 +22,11 @@ form_user #:# Benutzer
 form_user_completed #:# Benutzer abgeschlossen (%)
 form_date #:# Datum
 form_interval #:# Interval
+form_cancel#:#Abbrechen
+form_update#:#Speichern
+form_create#:#Erstellen
+form_headtitle_new#:#Neuer Trigger
+form_headtitle_old#:#Trigger Bearbeiten
 
 header_btn_add #:# Trigger Hinzufügen
 system_account_msg_success #:# Erfolgreich
@@ -29,3 +34,17 @@ btn_back #:# Zurück
 list_edit_trigger #:# Trigger bearbeiten
 list_delete_trigger #:# Trigger löschen
 list_copy_trigger #:# Trigger Kopieren
+list_trigger_trigger#:#Trigger auslösen
+
+subtab_agg_test_results#:#Aggregierte Testergebnisse
+subtab_avg_points#:#Durchschnittliche Punktzahl
+subtab_filters#:#Filter
+subtab_alerts#:#Benachrichtigungen
+
+avg_points_finished#:#Durchschnittliche Punktzahl abgeschlossene Tests
+avg_result_passed#:#Durchschnittliches Resultat (%) bestandene Tests
+avg_result_finished#:#Durchschnittliches Resultat (%) abgeschlossene Tests
+avg_result_finished_run_one#:#Durchschnittliches Resultat (%) bestandene Tests (Durchlauf 1)
+avg_result_passed_run_one#:#Durchschnittliches Resultat (%) abgeschlossene Tests (Durchlauf 1)
+avg_result_passed_run_two#:#Durchschnittliches Resultat (%) bestandene Tests (Durchlauf 2)
+avg_result_finished_run_two#:#Durchschnittliches Resultat (%) abgeschlossene Tests (Durchlauf 2)

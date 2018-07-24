@@ -7,6 +7,11 @@ require_once('./Services/Form/classes/class.ilSubEnabledFormPropertyGUI.php');
  */
 class MultiLineInputGUI extends ilCustomInputGUI {
 
+    /**
+     * @var ilAdvancedTestStatisticsPlugin
+     */
+	protected $pl;
+
 	/**
 	 * @var array
 	 */
@@ -23,13 +28,13 @@ class MultiLineInputGUI extends ilCustomInputGUI {
 	 * @var array
 	 */
 	protected $extendedFields = array(
-		"avg_points_finished" => "Average Points finished tests",
-		"avg_result_passed" => "Average result passed tests",
-		"avg_result_finished" => "Average result(%) finished tests",
-		"avg_result_finished_run_one" => "Average result(%) passed tests (Run 1)",
-		"avg_result_passed_run_one" => "Average result(%) finished tests (Run 1)",
-		"avg_result_passed_run_two" => "Average result(%) passed tests (Run 2)",
-		"avg_result_finished_run_two" => "Average result(%) finished tests (Run 2)"
+		"avg_points_finished",
+		"avg_result_passed",
+		"avg_result_finished",
+		"avg_result_finished_run_one",
+		"avg_result_passed_run_one",
+		"avg_result_passed_run_two",
+		"avg_result_finished_run_two",
 	);
 	/**
 	 * @var int
@@ -50,6 +55,8 @@ class MultiLineInputGUI extends ilCustomInputGUI {
 		global $ilCtrl;
 
 		$this->ctrl = $ilCtrl;
+		$this->pl = ilAdvancedTestStatisticsPlugin::getInstance();
+
 		parent::__construct($title, $post_var);
 		$this->setFieldName($field_name);
 	}
@@ -64,8 +71,8 @@ class MultiLineInputGUI extends ilCustomInputGUI {
 		foreach ($this->extendedFields as $extendedField){
 			$this->tpl->setCurrentBlock('OPTIONS');
 			//$this->tpl->setVariable('SELECT_NAME','Select one');
-			$this->tpl->setVariable('OPTION_VALUE', $this->getFieldName() . $extendedField);
-			$this->tpl->setVariable('OPTION', $extendedField);
+			$this->tpl->setVariable('OPTION_VALUE', $this->getFieldName() . $this->pl->txt($extendedField));
+			$this->tpl->setVariable('OPTION', $this->pl->txt($extendedField));
 			$this->tpl->parseCurrentBlock();
 		}
 

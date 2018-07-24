@@ -100,6 +100,11 @@ class ilAdvancedTestStatisticsSettingsGUI {
 		$this->tabs->setBackTarget($this->pl->txt('btn_back'), $this->ctrl->getLinkTargetByClass(array( 'ilrepositorygui', 'ilObjTestGUI', 'ilTestEvaluationGUI' ), 'outEvaluation'));
 	}
 
+	protected function cancel() {
+        $this->ctrl->setParameterByClass('ilrepositorygui', 'ref_id', (int)$_GET['ref_id']);
+        $this->ctrl->redirectByClass(array( 'ilrepositorygui', 'ilObjTestGUI', 'ilTestEvaluationGUI' ), 'outEvaluation');
+    }
+
 	public function updateFilter(){
 		$form = new ilAdvancedTestStatisticsFilterFormGUI($this);
 
@@ -253,6 +258,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 				}
 				return false;
 			default:
+			    throw new ilException('No operator given for trigger.');
 				break;
 		}
 
