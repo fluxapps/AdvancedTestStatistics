@@ -205,7 +205,7 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
             'value' => $this->object->getValue(),
             'user' => ilObjUser::_lookupLogin($this->object->getUserId()),
             'user_completed' => $this->object->getUserPercentage(),
-            'date' => $this->object->getDatesender(),
+            'date' => array("date" => date('Y-m-d', $this->object->getDatesender())),
             'interval' => $this->object->getIntervalls()
         );
 		$this->setValuesByArray($array);
