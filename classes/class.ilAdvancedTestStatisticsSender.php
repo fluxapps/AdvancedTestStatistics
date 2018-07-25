@@ -18,7 +18,7 @@ class ilAdvancedTestStatisticsSender {
 
 		$placeholders = array('course' => new ilObjCourse($course_id,true), 'test' => new ilObjTest($ref_id,true));
 
-		try{
+		try {
 			$notification = srNotification::getInstanceByName(self::NOTIFICATIONNAME);
 			$notification->send($sender,$placeholders);
 		}

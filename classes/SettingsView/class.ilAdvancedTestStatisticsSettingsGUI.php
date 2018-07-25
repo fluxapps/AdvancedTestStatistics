@@ -156,16 +156,31 @@ class ilAdvancedTestStatisticsSettingsGUI {
 	 * create new Trigger
 	 */
 	public function createTrigger(){
-	$form = new ilAdvancedTestStatisticsAlertFormGUI($this,new xatsTriggers());
-	$form->setValuesByPost();
+        $form = new ilAdvancedTestStatisticsAlertFormGUI($this,new xatsTriggers());
+        $form->setValuesByPost();
 
-	if($form->save()){
-		ilUtil::sendSuccess($this->pl->txt('system_account_msg_success'),true);
-		$this->ctrl->redirect(new ilAdvancedTestStatisticsSettingsGUI, ilAdvancedTestStatisticsSettingsGUI::CMD_DISPLAY_TRIGGERS);
+        if($form->save()){
+            ilUtil::sendSuccess($this->pl->txt('system_account_msg_success'),true);
+            $this->ctrl->redirect(new ilAdvancedTestStatisticsSettingsGUI, ilAdvancedTestStatisticsSettingsGUI::CMD_DISPLAY_TRIGGERS);
+        }
+
+        $this->tpl->setContent($form->getHTML());
+
 	}
 
-	$this->tpl->setContent($form->getHTML());
+	/**
+	 * update Trigger
+	 */
+	public function updateTrigger(){
+        $form = new ilAdvancedTestStatisticsAlertFormGUI($this, xatsTriggers::find($_POST[self::IDENTIFIER_TRIGGER]));
+        $form->setValuesByPost();
 
+        if($form->save()){
+            ilUtil::sendSuccess($this->pl->txt('system_account_msg_success'),true);
+            $this->ctrl->redirect(new ilAdvancedTestStatisticsSettingsGUI, ilAdvancedTestStatisticsSettingsGUI::CMD_DISPLAY_TRIGGERS);
+        }
+
+        $this->tpl->setContent($form->getHTML());
 	}
 
 
@@ -202,6 +217,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 	 * Activate trigger
 	 */
 	public function trigger(){
+	    /** @var xatsTriggers $trigger */
 		$trigger = xatsTriggers::find($_GET[self::IDENTIFIER_TRIGGER]);
 
 		/*
@@ -272,10 +288,9 @@ class ilAdvancedTestStatisticsSettingsGUI {
 
 		$sender = new ilAdvancedTestStatisticsSender();
 		try {
-		$sender->createNotification($this->ref_id_course,$trigger->getUserId(),$this->ref_id);
-		ilUtil::sendSuccess($this->pl->txt('system_account_msg_success_trigger'),true);
-		}
-		catch (Exception $exception){
+		    $sender->createNotification($this->ref_id_course,$trigger->getUserId(),$this->ref_id);
+		    ilUtil::sendSuccess($this->pl->txt('system_account_msg_success_trigger'),true);
+		} catch (Exception $exception){
 
 		}
 		$this->ctrl->redirect($this,self::CMD_DISPLAY_TRIGGERS);
