@@ -407,7 +407,7 @@ where passed = 1 and test_fi = " . $this->DB->quote($tst_id, "integer") . "";
 
 		$select = "select user_fi, points, maxpoints from tst_active
 inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
- where  test_fi = " . $this->DB->quote($tst_id, "integer") . "";
+ where  submitted = 1 AND test_fi = " . $this->DB->quote($tst_id, "integer");
 
 		$result = $this->DB->query($select);
 
@@ -429,7 +429,6 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
             unset($rows[$filtered_user]);
         }
 
-		$rows = array_filter($rows);
 		$average = array_sum($rows) / count($rows);
 
 		if (!$average) {
@@ -483,7 +482,7 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
 		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
 
-		$result = ($average_passed_max/100) * $average_passed_reached;
+		$result = ($average_passed_reached/$average_passed_max) * 100;
 
 		return $result;
 	}
@@ -532,7 +531,7 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
 		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
 
-		$result = ($average_passed_max/100) * $average_passed_reached;
+        $result = ($average_passed_reached/$average_passed_max) * 100;
 
 		return $result;
 	}
@@ -572,17 +571,19 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
         }
 
 		foreach ($participants as $userdata) {
-			if ($userdata->getPassed()) {
-				$total_passed ++;
-				$total_passed_reached += $userdata->getReached();
-				$total_passed_max += $userdata->getMaxpoints();
-			}
+            $pass = $userdata->getPass(0);
+            if ($pass) {
+                $total_passed ++;
+                $total_passed_reached += $pass->getReachedPoints();
+                $total_passed_max += $pass->getMaxPoints();
+            }
 		}
 		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
 		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
-		$result = ($average_passed_max/100) * $average_passed_reached;
 
-		return $result;
+		$result = ($average_passed_reached/$average_passed_max) * 100;
+
+        return $result;
 	}
 
 
@@ -620,16 +621,17 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
         }
 
 		foreach ($participants as $userdata) {
-			if ($userdata->getPassed()) {
-				$total_passed ++;
-				$total_passed_reached += $userdata->getReached();
-				$total_passed_max += $userdata->getMaxpoints();
-			}
+            $pass = $userdata->getPass(1);
+            if ($pass) {
+                $total_passed ++;
+                $total_passed_reached += $pass->getReachedPoints();
+                $total_passed_max += $pass->getMaxPoints();
+            }
 		}
 		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
 		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
 
-		$result = ($average_passed_max/100) * $average_passed_reached;
+        $result = ($average_passed_reached/$average_passed_max) * 100;
 
 		return $result;
 
