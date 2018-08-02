@@ -124,8 +124,6 @@ class ilAdvancedTestStatisticsFilterFormGUI extends ilPropertyFormGUI {
 
 
 	public function save() {
-		global $ilDB;
-
 		if (!$this->fill()) {
 			return false;
 		}
@@ -182,7 +180,13 @@ class ilAdvancedTestStatisticsFilterFormGUI extends ilPropertyFormGUI {
 
 
 	public function fillForm() {
-		$values['inactive'] = $this->object->isFilterInactive();
+        $users = xatsFilteredUsers::where(array('ref_id' => $this->ref_id))->getArray();
+        $users_array = array();
+        foreach ($users as $user) {
+            $users_array[] = $user['user_id'];
+        }
+        $values['user'] = $users_array;
+        $values['inactive'] = $this->object->isFilterInactive();
 
 		$values['avg_points_finished'] = $this->filterFields->isAvgPointsFinished();
 		$values['avg_result_passed'] = $this->filterFields->isAvgResultPassed();
@@ -191,7 +195,6 @@ class ilAdvancedTestStatisticsFilterFormGUI extends ilPropertyFormGUI {
 		$values['avg_result_passed_run_one'] = $this->filterFields->isAvgResultPassedRunOne();
 		$values['avg_result_passed_run_two'] = $this->filterFields->isAvgResultPassedRunTwo();
 		$values['avg_result_finished_run_two'] = $this->filterFields->isAvgResultsFinishedRunTwo();
-
 
 
 		$this->setValuesByArray($values);

@@ -36,6 +36,14 @@ class ilAdvancedTestStatisticsAggResults {
 			}
 		}
 
+        if ($filtered_users = $this->getFilteredUsers()) {
+            foreach ($participants as $key => $participant) {
+                if (in_array($participant->getUserId(), $filtered_users)) {
+                    unset($participants[$key]);
+                }
+            }
+        }
+
 		if (!$participants) {
 			return 'Nothing to display';
 		}
@@ -71,6 +79,11 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 			}
 		}
 
+		// Filter explicitly filtered users
+        foreach ($this->getFilteredUsers() as $filtered_user) {
+            unset($rows[$filtered_user]);
+        }
+
 		$rows = array_filter($rows);
 
 		if(!$rows){
@@ -95,7 +108,7 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 		$times = array();
 		while ($row = $ilDB->fetchObject($result)) {
 			//Filter inactive users if checkbox is set
-			if (!$this->checkFilterInactive($ref_id) == 1 || !key_exists($row->userfi, $inactive_usrs)) {
+			if (!($this->checkFilterInactive($ref_id) == 1 && key_exists($row->userfi, $inactive_usrs)) && !in_array($row->userfi, $this->getInactiveUsers())) {
                 preg_match("/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/", $row->started, $matches);
                 $epoch_1 = mktime($matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1]);
                 preg_match("/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/", $row->finished, $matches);
@@ -149,6 +162,15 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 			}
 		}
 
+		// Filter explicitly filtered users
+        if ($filtered_users = $this->getFilteredUsers()) {
+            foreach ($participants as $key => $participant) {
+                if (in_array($participant->getUserId(), $filtered_users)) {
+                    unset($participants[$key]);
+                }
+            }
+        }
+
 		foreach ($participants as $userdata) {
 			if ($userdata->getPassed()) {
 				$total_passed ++;
@@ -193,6 +215,15 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 			}
 		}
 
+        // Filter explicitly filtered users
+        if ($filtered_users = $this->getFilteredUsers()) {
+            foreach ($participants as $key => $participant) {
+                if (in_array($participant->getUserId(), $filtered_users)) {
+                    unset($participants[$key]);
+                }
+            }
+        }
+
 		foreach ($participants as $userdata) {
 			if ($userdata->getPassed()) {
 				$total_passed ++;
@@ -232,6 +263,15 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 				}
 			}
 		}
+
+        // Filter explicitly filtered users
+        if ($filtered_users = $this->getFilteredUsers()) {
+            foreach ($participants as $key => $participant) {
+                if (in_array($participant->getUserId(), $filtered_users)) {
+                    unset($participants[$key]);
+                }
+            }
+        }
 
 		foreach ($participants as $userdata) {
 			if ($userdata->getPassed()) {
@@ -284,6 +324,7 @@ inner join tst_test_result on tst_active.active_id = tst_test_result.active_fi
 
 		$result = $this->DB->query($select);
 
+		$rows = array();
 		while ($row = $this->DB->fetchAssoc($result)) {
 
 			$rows[$row['user_fi']] = $row['sum(points)'];
@@ -296,6 +337,12 @@ inner join tst_test_result on tst_active.active_id = tst_test_result.active_fi
 				unset($rows[$user]);
 			}
 		}
+
+
+        // Filter explicitly filtered users
+        foreach ($this->getFilteredUsers() as $filtered_user) {
+            unset($rows[$filtered_user]);
+        }
 
 		$rows = array_filter($rows);
 		$average = array_sum($rows) / count($rows);
@@ -321,6 +368,7 @@ where passed = 1 and test_fi = " . $this->DB->quote($tst_id, "integer") . "";
 
 		$result = $this->DB->query($select);
 
+		$rows = array();
 		while ($row = $this->DB->fetchAssoc($result)) {
 			$rows[$row['user_fi']] = (100 / $row['max_points']) * $row['reached_points'];
 		}
@@ -329,9 +377,14 @@ where passed = 1 and test_fi = " . $this->DB->quote($tst_id, "integer") . "";
 		if ($this->checkFilterInactive($ref_id) == 1) {
 			$inactive_usrs = $this->getInactiveUsers();
 			foreach ($inactive_usrs as $user) {
-				unset($user, $rows);
+				unset($rows[$user]);
 			}
 		}
+
+        // Filter explicitly filtered users
+        foreach ($this->getFilteredUsers() as $filtered_user) {
+            unset($rows[$filtered_user]);
+        }
 
 		$rows = array_filter($rows);
 		$average = array_sum($rows) / count($rows);
@@ -358,6 +411,7 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 
 		$result = $this->DB->query($select);
 
+		$rows = array();
 		while ($row = $this->DB->fetchAssoc($result)) {
 			$rows[$row['user_fi']] = (100 / $row['maxpoints']) * $row['points'];
 		}
@@ -366,9 +420,14 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 		if ($this->checkFilterInactive($ref_id) == 1) {
 			$inactive_usrs = $this->getInactiveUsers();
 			foreach ($inactive_usrs as $user) {
-				unset($user, $rows);
+				unset($rows[$user]);
 			}
 		}
+
+        // Filter explicitly filtered users
+        foreach ($this->getFilteredUsers() as $filtered_user) {
+            unset($rows[$filtered_user]);
+        }
 
 		$rows = array_filter($rows);
 		$average = array_sum($rows) / count($rows);
@@ -398,13 +457,21 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 		//Filter inactive users if checkbox is set
 		if ($this->checkFilterInactive($ref_id) == 1) {
 			$inactive_usrs = $this->getInactiveUsers();
-			foreach ($participants as $participant) {
+			foreach ($participants as $key => $participant) {
 				if (key_exists($participant->getUserID(), $inactive_usrs)) {
-					$key = key($participant);
-					unset($key, $participants);
+					unset($participants[$key]);
 				}
 			}
 		}
+
+        // Filter explicitly filtered users
+        if ($filtered_users = $this->getFilteredUsers()) {
+            foreach ($participants as $key => $participant) {
+                if (in_array($participant->getUserId(), $filtered_users)) {
+                    unset($participants[$key]);
+                }
+            }
+        }
 
 		foreach ($participants as $userdata) {
 			if ($userdata->getPassed()) {
@@ -439,13 +506,21 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 		//Filter inactive users if checkbox is set
 		if ($this->checkFilterInactive($ref_id) == 1) {
 			$inactive_usrs = $this->getInactiveUsers();
-			foreach ($participants as $participant) {
+			foreach ($participants as $key => $participant) {
 				if (key_exists($participant->getUserID(), $inactive_usrs)) {
-					$key = key($participant);
-					unset($key, $participants);
+					unset($participants[$key]);
 				}
 			}
 		}
+
+        // Filter explicitly filtered users
+        if ($filtered_users = $this->getFilteredUsers()) {
+            foreach ($participants as $key => $participant) {
+                if (in_array($participant->getUserId(), $filtered_users)) {
+                    unset($participants[$key]);
+                }
+            }
+        }
 
 		foreach ($participants as $userdata) {
 			if ($userdata->getPassed()) {
@@ -480,13 +555,21 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 		//Filter inactive users if checkbox is set
 		if ($this->checkFilterInactive($ref_id) == 1) {
 			$inactive_usrs = $this->getInactiveUsers();
-			foreach ($participants as $participant) {
+			foreach ($participants as $key => $participant) {
 				if (key_exists($participant->getUserID(), $inactive_usrs)) {
-					$key = key($participant);
-					unset($key, $participants);
+					unset($participants[$key]);
 				}
 			}
 		}
+
+        // Filter explicitly filtered users
+        if ($filtered_users = $this->getFilteredUsers()) {
+            foreach ($participants as $key => $participant) {
+                if (in_array($participant->getUserId(), $filtered_users)) {
+                    unset($participants[$key]);
+                }
+            }
+        }
 
 		foreach ($participants as $userdata) {
 			if ($userdata->getPassed()) {
@@ -520,13 +603,21 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 		//Filter inactive users if checkbox is set
 		if ($this->checkFilterInactive($ref_id) == 1) {
 			$inactive_usrs = $this->getInactiveUsers();
-			foreach ($participants as $participant) {
+			foreach ($participants as $key => $participant) {
 				if (key_exists($participant->getUserID(), $inactive_usrs)) {
-					$key = key($participant);
-					unset($key, $participants);
+					unset($participants[$key]);
 				}
 			}
 		}
+
+        // Filter explicitly filtered users
+        if ($filtered_users = $this->getFilteredUsers()) {
+            foreach ($participants as $key => $participant) {
+                if (in_array($participant->getUserId(), $filtered_users)) {
+                    unset($participants[$key]);
+                }
+            }
+        }
 
 		foreach ($participants as $userdata) {
 			if ($userdata->getPassed()) {
@@ -592,6 +683,17 @@ where ref_id = " . $this->DB->quote($ref_id, "integer") . "";
 		return $rows;
 	}
 
+    /**
+     * @return array
+     */
+	public function getFilteredUsers() {
+        $users = array();
+	    foreach (xatsFilteredUsers::where(array('ref_id' => $_GET['ref_id']))->get() as $filtered_user){
+            /** @var $filtered_user xatsFilteredUsers */
+            $users[$filtered_user->getUserId()] = $filtered_user->getUserId();
+        }
+        return $users;
+    }
 
 	/**
 	 * @param $ref_id
