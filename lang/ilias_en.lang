@@ -39,6 +39,7 @@ list_delete_trigger #:# Delete Trigger
 list_copy_trigger #:# Copy Trigger
 list_trigger_trigger#:#Manually Start Trigger
 trigger_not_executed #:# Trigger not satisfied
+system_account_msg_success_trigger#:#Trigger was satisfied.
 
 subtab_agg_test_results#:#Aggregated Test Results
 subtab_avg_points#:#Average Points

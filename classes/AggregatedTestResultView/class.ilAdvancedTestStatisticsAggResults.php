@@ -29,9 +29,9 @@ class ilAdvancedTestStatisticsAggResults {
 			$inactive_users = $this->getInactiveUsers();
 			foreach ($inactive_users as $inactive_user) {
 				foreach ($participants as $key => $participant){
-				if($inactive_user == $participant->getUserId()){
-					unset($participants[$key]);
-				}
+                    if($inactive_user == $participant->getUserId()){
+                        unset($participants[$key]);
+                    }
 				}
 			}
 		}
@@ -67,7 +67,7 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 		if ($this->checkFilterInactive($ref_id) == 1) {
 			$inactive_usrs = $this->getInactiveUsers();
 			foreach ($inactive_usrs as $user) {
-				unset($user, $rows);
+				unset($rows[$user]);
 			}
 		}
 
@@ -95,14 +95,12 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 		$times = array();
 		while ($row = $ilDB->fetchObject($result)) {
 			//Filter inactive users if checkbox is set
-			if ($this->checkFilterInactive($ref_id) == 1) {
-				if (key_exists($row->userfi, $inactive_usrs)) {
-					preg_match("/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/", $row->started, $matches);
-					$epoch_1 = mktime($matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1]);
-					preg_match("/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/", $row->finished, $matches);
-					$epoch_2 = mktime($matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1]);
-					$times[$row->active_fi] += ($epoch_2 - $epoch_1);
-				}
+			if (!$this->checkFilterInactive($ref_id) == 1 || !key_exists($row->userfi, $inactive_usrs)) {
+                preg_match("/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/", $row->started, $matches);
+                $epoch_1 = mktime($matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1]);
+                preg_match("/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/", $row->finished, $matches);
+                $epoch_2 = mktime($matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1]);
+                $times[$row->active_fi] += ($epoch_2 - $epoch_1);
 			}
 		}
 		$max_time = 0;
@@ -144,10 +142,9 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 		//Filter inactive users if checkbox is set
 		if ($this->checkFilterInactive($ref_id) == 1) {
 			$inactive_usrs = $this->getInactiveUsers();
-			foreach ($participants as $participant) {
+			foreach ($participants as $key => $participant) {
 				if (key_exists($participant->getUserID(), $inactive_usrs)) {
-					$key = key($participant);
-					unset($key, $participants);
+					unset($participants[$key]);
 				}
 			}
 		}
@@ -189,10 +186,9 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 		//Filter inactive users if checkbox is set
 		if ($this->checkFilterInactive($ref_id) == 1) {
 			$inactive_usrs = $this->getInactiveUsers();
-			foreach ($participants as $participant) {
+			foreach ($participants as $key => $participant) {
 				if (key_exists($participant->getUserID(), $inactive_usrs)) {
-					$key = key($participant);
-					unset($key, $participants);
+					unset($participants[$key]);
 				}
 			}
 		}
@@ -230,10 +226,9 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 		//Filter inactive users if checkbox is set
 		if ($this->checkFilterInactive($ref_id) == 1) {
 			$inactive_usrs = $this->getInactiveUsers();
-			foreach ($participants as $participant) {
+			foreach ($participants as $key => $participant) {
 				if (key_exists($participant->getUserID(), $inactive_usrs)) {
-					$key = key($participant);
-					unset($key, $participants);
+					unset($participants[$key]);
 				}
 			}
 		}
@@ -298,7 +293,7 @@ inner join tst_test_result on tst_active.active_id = tst_test_result.active_fi
 		if ($this->checkFilterInactive($ref_id) == 1) {
 			$inactive_usrs = $this->getInactiveUsers();
 			foreach ($inactive_usrs as $user) {
-				unset($user, $rows);
+				unset($rows[$user]);
 			}
 		}
 
@@ -606,7 +601,7 @@ where ref_id = " . $this->DB->quote($ref_id, "integer") . "";
 	 */
 	public function checkFilterInactive($ref_id) {
 		//Check if filter is set
-		$selecta = "select * from xats_filter where ref_id = " . $this->DB->quote($ref_id, "integer") . "";
+		$selecta = "select * from xats_filter where ref_id = " . $this->DB->quote($ref_id, "integer");
 
 		$result = $this->DB->query($selecta);
 

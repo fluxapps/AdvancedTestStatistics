@@ -55,7 +55,7 @@ class ilAdvancedTestStatisticsUIHookGUI extends ilUIHookPluginGUI {
 			    $subtabs = array('subtab_aggTestResults', 'subtab_avg_points');
 
 				$tabs = $a_par['tabs'];
-                $tabs->removeSubTab('tst_results_aggregated');
+//                $tabs->removeSubTab('tst_results_aggregated');
 
                 // aggTestResults
                 $this->ctrl->saveParameterByClass('ilAdvancedTestStatisticsGUI', 'ref_id');

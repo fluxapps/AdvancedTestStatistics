@@ -294,8 +294,6 @@ class ilAdvancedTestStatisticsSettingsGUI {
 
 		}
 		$this->ctrl->redirect($this,self::CMD_DISPLAY_TRIGGERS);
-
-
 	}
 
 
