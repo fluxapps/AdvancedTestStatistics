@@ -11,12 +11,11 @@ class ilAdvancedTestStatisticsSender {
 	Const NOTIFICATIONNAME = 'statisticsNotification';
 
 
-	public function createNotification($course_id,$usr_id,$ref_id){
+	public function createNotification($course_id, xatsTriggers $trigger){
 
-		$sender = new srNotificationInternalMailSender(new ilObjUser(6), new ilObjUser($usr_id));
+		$sender = new srNotificationInternalMailSender(new ilObjUser(6), new ilObjUser($trigger->getUserId()));
 
-
-		$placeholders = array('course' => new ilObjCourse($course_id,true), 'test' => new ilObjTest($ref_id,true));
+		$placeholders = array('course' => new ilObjCourse($course_id,true), 'test' => new ilObjTest($trigger->getRefId(),true), 'trigger' => $trigger);
 
 		try {
 			$notification = srNotification::getInstanceByName(self::NOTIFICATIONNAME);

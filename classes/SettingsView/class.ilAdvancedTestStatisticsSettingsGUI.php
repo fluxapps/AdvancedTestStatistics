@@ -288,7 +288,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 
 		$sender = new ilAdvancedTestStatisticsSender();
 		try {
-		    $sender->createNotification($this->ref_id_course,$trigger->getUserId(),$this->ref_id);
+		    $sender->createNotification($this->ref_id_course,$trigger);
 		    ilUtil::sendSuccess($this->pl->txt('system_account_msg_success_trigger'),true);
 		} catch (Exception $exception){
 
