@@ -27,23 +27,24 @@ class ilAdvancedTestStatisticsConstantTranslator {
 			4 => "avg_result_finished_run_one",
 			5 => "avg_result_passed_run_two",
 			6 => "avg_result_finished_run_two",
-			7 =>'nr_participants_started',
-			8 =>'nr_tests_finished',
-			9 =>'avg_test_time',
-			10 =>'nr_tests_passed',
-			11 =>'avg_points_passed',
+			7 => 'nr_participants_started',
+			8 => 'nr_tests_finished',
+			9 => 'avg_test_time',
+			10 => 'nr_tests_passed',
+			11 => 'avg_points_passed',
 			12 => 'avg_passed_test_time',
 		);
 
 		$test = new ilObjTest($ref_id);
 		$questions = $test->getAllQuestions();
 
+		$question_array = array();
 		foreach ($questions as $question) {
-			$extendedFields[$question['question_id']] = $question['title'];
+            $question_array[$question['question_id']] = $question['title'];
 		}
 
 
-		return ilAdvancedTestStatisticsPlugin::getInstance()->txt($extendedFields[$key]);
+		return in_array($key, $extendedFields) ? ilAdvancedTestStatisticsPlugin::getInstance()->txt($key) : $question_array[$key];
 
 	}
 
@@ -59,19 +60,19 @@ class ilAdvancedTestStatisticsConstantTranslator {
 		$id = $class->getTstidforRefid($ref_id);
 
 		switch ($key){
-			case 0: return $class->getAveragePointsFinshedTests($id,$ref_id);
-			case 1: return $class->getAverageResultPassedTests($id,$ref_id);
-			case 2: return $class->getAverageResultFinishedTests($id,$ref_id);
-			case 3: return $class->getAverageResultPassedTestsRunOne($ref_id);
-			case 4: return $class->getAverageResultFinishedTestsRunOne($ref_id);
-			case 5: return $class->getAverageResultPassedTestsRunTwo($ref_id);
-			case 6: return $class->getAverageResultPassedTestsRunTwo($ref_id);
-			case 7: return $class->getTotalNumberStartedTest($ref_id);
-			case 8: return $class->getTotalFinishedTests($ref_id);
-			case 9: return $class->getAvgTestTime($ref_id,$id);
-			case 10: return $class->getTotalPassedTests($ref_id);
-			case 11: return $class->getAveragePointsPassedTests($ref_id);
-			case 12: return $class->getAverageTimePassedTests($ref_id);
+			case 'avg_points_finished': return $class->getAveragePointsFinshedTests($id,$ref_id);
+			case "avg_result_passed": return $class->getAverageResultPassedTests($id,$ref_id);
+			case "avg_result_finished": return $class->getAverageResultFinishedTests($id,$ref_id);
+			case "avg_result_passed_run_one": return $class->getAverageResultPassedTestsRunOne($ref_id);
+			case "avg_result_finished_run_one": return $class->getAverageResultFinishedTestsRunOne($ref_id);
+			case "avg_result_passed_run_two": return $class->getAverageResultPassedTestsRunTwo($ref_id);
+			case "avg_result_finished_run_two": return $class->getAverageResultFinishedTestsRunTwo($ref_id);
+			case 'nr_participants_started': return $class->getTotalNumberStartedTest($ref_id);
+			case 'nr_tests_finished': return $class->getTotalFinishedTests($ref_id);
+			case 'avg_test_time': return $class->getAvgTestTime($ref_id,$id);
+			case 'nr_tests_passed': return $class->getTotalPassedTests($ref_id);
+			case 'avg_points_passed': return $class->getAveragePointsPassedTests($ref_id);
+			case 'avg_passed_test_time': return $class->getAverageTimePassedTests($ref_id);
 			default: return false;
 		}
 

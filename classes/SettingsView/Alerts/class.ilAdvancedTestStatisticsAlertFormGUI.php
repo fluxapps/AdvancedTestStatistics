@@ -49,19 +49,19 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 		$this->setFormAction($this->ctrl->getFormAction($this->parent_gui));
 
         $this->extendedFields = array(
-            $this->pl->txt("avg_points_finished"),
-            $this->pl->txt("avg_result_passed"),
-            $this->pl->txt("avg_result_finished"),
-            $this->pl->txt("avg_result_finished_run_one"),
-            $this->pl->txt("avg_result_passed_run_one"),
-            $this->pl->txt("avg_result_passed_run_two"),
-            $this->pl->txt("avg_result_finished_run_two"),
-            $this->pl->txt('nr_participants_started'),
-            $this->pl->txt('nr_tests_finished'),
-            $this->pl->txt('avg_test_time'),
-            $this->pl->txt('nr_tests_passed'),
-            $this->pl->txt('avg_points_passed'),
-            $this->pl->txt('avg_passed_test_time'),
+            "avg_points_finished" => $this->pl->txt("avg_points_finished"),
+            "avg_result_passed" => $this->pl->txt("avg_result_passed"),
+            "avg_result_finished" => $this->pl->txt("avg_result_finished"),
+            "avg_result_finished_run_one" => $this->pl->txt("avg_result_finished_run_one"),
+            "avg_result_passed_run_one" => $this->pl->txt("avg_result_passed_run_one"),
+            "avg_result_passed_run_two"  => $this->pl->txt("avg_result_passed_run_two"),
+            "avg_result_finished_run_two" => $this->pl->txt("avg_result_finished_run_two"),
+            'nr_participants_started' => $this->pl->txt('nr_participants_started'),
+            'nr_tests_finished' => $this->pl->txt('nr_tests_finished'),
+            'avg_test_time' => $this->pl->txt('avg_test_time'),
+            'nr_tests_passed' => $this->pl->txt('nr_tests_passed'),
+            'avg_points_passed' => $this->pl->txt('avg_points_passed'),
+            'avg_passed_test_time' => $this->pl->txt('avg_passed_test_time'),
         );
 
 		$test = new ilObjTest($this->ref_id);

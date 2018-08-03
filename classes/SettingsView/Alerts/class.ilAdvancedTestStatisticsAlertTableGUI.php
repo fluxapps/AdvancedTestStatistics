@@ -102,6 +102,7 @@ class ilAdvancedTestStatisticsAlertTableGUI extends ilTable2GUI {
 		$triggers = xatsTriggers::where(array('ref_id' => $this->ref_id))->get();
 
 		foreach ($triggers as $trigger) {
+            /** @var $trigger xatsTriggers */
 
 			$row = array();
 			$row['id'] = $trigger->getId();
