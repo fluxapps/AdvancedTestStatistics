@@ -53,7 +53,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 		$this->test = ilObjectFactory::getInstanceByRefId($this->ref_id);
 
 		$this->tree = $tree;
-		$this->ref_id_course = $this->tree->getParentId($_GET['ref_id']);
+		$this->ref_id_course = $this->pl->getParentCourseId($this->ref_id);
 		$this->usr_ids = ilCourseMembers::getData($this->ref_id_course);
 
 	}
@@ -270,7 +270,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 
         $sender = new ilAdvancedTestStatisticsSender();
 		try {
-		    $sender->createNotification($this->ref_id_course,$trigger, $trigger_values);
+		    $sender->createNotification($this->ref_id_course, $trigger, $trigger_values);
 		    ilUtil::sendSuccess($this->pl->txt('system_account_msg_success_trigger'),true);
 		} catch (Exception $exception){
             ilUtil::sendFailure('Error: ' . $exception->getMessage(), true);
