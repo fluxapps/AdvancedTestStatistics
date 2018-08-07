@@ -62,14 +62,8 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
             'nr_tests_passed' => $this->pl->txt('nr_tests_passed'),
             'avg_points_passed' => $this->pl->txt('avg_points_passed'),
             'avg_passed_test_time' => $this->pl->txt('avg_passed_test_time'),
+            'qst_percentage' => $this->pl->txt('qst_percentage')
         );
-
-		$test = new ilObjTest($this->ref_id);
-		$questions = $test->getAllQuestions();
-
-		foreach ($questions as $question) {
-			$this->extendedFields[$question['question_id']] = $question['title'];
-		}
 
 		parent::__construct();
 

@@ -138,9 +138,15 @@ class xatsTriggers extends ActiveRecord {
 		$this->trigger_name = $trigger_name;
 	}
 
+    /**
+     * @return string
+     */
+    public function getTriggerNameFormatted() {
+        return ilAdvancedTestStatisticsPlugin::getInstance()->txt($this->trigger_name);
+	}
 
 	/**
-	 * @return int
+	 * @return int returns operator as key (0, 1, etc.)
 	 */
 	public function getOperator() {
 		return $this->operator;
@@ -152,6 +158,13 @@ class xatsTriggers extends ActiveRecord {
 	 */
 	public function setOperator($operator) {
 		$this->operator = $operator;
+	}
+
+    /**
+     * return String returns <, >, = etc.
+     */
+    public function getOperatorFormatted() {
+        return ilAdvancedTestStatisticsConstantTranslator::getOperatorforKey($this->getOperator());
 	}
 
 

@@ -59,6 +59,7 @@ avg_passed_test_time#:#Average processing time of all passed tests
 nr_participants_started#:#Total number of participants who started the test
 nr_tests_finished#:#Total finished tests (Participants that used up all possible passes)
 nr_tests_passed#:#Total passed tests
+qst_percentage#:#Question Percentage
 
 input_dont_count_inactive#:#Do not count inactive users
 input_filter_users#:#Filter Users from statistics

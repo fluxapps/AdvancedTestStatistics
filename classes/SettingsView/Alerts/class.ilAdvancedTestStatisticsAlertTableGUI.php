@@ -101,13 +101,13 @@ class ilAdvancedTestStatisticsAlertTableGUI extends ilTable2GUI {
 	public function parseData() {
 		$triggers = xatsTriggers::where(array('ref_id' => $this->ref_id))->get();
 
-		foreach ($triggers as $trigger) {
-            /** @var $trigger xatsTriggers */
+        /** @var $trigger xatsTriggers */
+        foreach ($triggers as $trigger) {
 
 			$row = array();
 			$row['id'] = $trigger->getId();
 
-			$t = ilAdvancedTestStatisticsConstantTranslator::getExtendedFieldforKey($trigger->getTriggername(),$this->ref_id);
+			$t = $this->pl->txt($trigger->getTriggerName());
 			$row['trigger'] = $t;
 
 			$operator = ilAdvancedTestStatisticsConstantTranslator::getOperatorforKey($trigger->getOperator());

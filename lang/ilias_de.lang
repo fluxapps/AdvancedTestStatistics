@@ -58,6 +58,7 @@ avg_passed_test_time#:#Durchschnittliche Zeit für bestandene Testdurchläufe
 nr_participants_started#:#Gesamtanzahl der Teilnehmer, welche den Test begonnen haben
 nr_tests_finished#:#Gesamtanzahl abgeschlossener Tests (Teilnehmer, welche alle Durchläufe aufgebraucht haben)
 nr_tests_passed#:#Gesamtanzahl bestandener Tests
+qst_percentage#:#Fragenprozent
 
 input_dont_count_inactive#:#Inaktive Benutzer ignorieren
 input_filter_users#:#Benutzer aus Statistiken filtern

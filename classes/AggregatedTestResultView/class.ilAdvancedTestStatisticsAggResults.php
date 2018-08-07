@@ -9,10 +9,14 @@
  */
 class ilAdvancedTestStatisticsAggResults {
 
-	public function __construct() {
+    /**
+     * ilAdvancedTestStatisticsAggResults constructor.
+     * @param int $ref_id
+     */
+    public function __construct($ref_id = 0) {
 		global $ilDB;
-
-		$this->object = ilObjectFactory::getInstanceByRefId($_GET['ref_id']);
+        $ref_id = $ref_id ? $ref_id : $_GET['ref_id'];
+		$this->object = ilObjectFactory::getInstanceByRefId($ref_id);
 		$this->DB = $ilDB;
 	}
 
@@ -108,7 +112,7 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 		$times = array();
 		while ($row = $ilDB->fetchObject($result)) {
 			//Filter inactive users if checkbox is set
-			if (!($this->checkFilterInactive($ref_id) == 1 && key_exists($row->userfi, $inactive_usrs)) && !in_array($row->userfi, $this->getInactiveUsers())) {
+			if (!($this->checkFilterInactive($ref_id) == 1 && key_exists($row->user_fi, $inactive_usrs)) && !in_array($row->user_fi, $this->getInactiveUsers()) && !in_array($row->user_fi, $this->getFilteredUsers())) {
                 preg_match("/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/", $row->started, $matches);
                 $epoch_1 = mktime($matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1]);
                 preg_match("/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/", $row->finished, $matches);
@@ -116,6 +120,11 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
                 $times[$row->active_fi] += ($epoch_2 - $epoch_1);
 			}
 		}
+
+		if (empty($times)) {
+            return 'Nothing to display';
+        }
+
 		$max_time = 0;
 		$counter = 0;
 		foreach ($times as $key => $value) {
@@ -229,12 +238,15 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 				$total_passed ++;
 				$total_passed_reached += $userdata->getReached();
 				$total_passed_max += $userdata->getMaxpoints();
-				$total_passed_time += $userdata->getTimeOfWork();
 			}
 		}
+
+		if (!$total_passed) {
+            return 'Nothing to display';
+        }
+
 		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
 		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
-		$average_passed_time = $total_passed ? $total_passed_time / $total_passed : 0;
 
 		return sprintf("%2.2f", $average_passed_reached) . " " . strtolower("of") . " " . sprintf("%2.2f", $average_passed_max);
 	}
@@ -276,13 +288,14 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 		foreach ($participants as $userdata) {
 			if ($userdata->getPassed()) {
 				$total_passed ++;
-				$total_passed_reached += $userdata->getReached();
-				$total_passed_max += $userdata->getMaxpoints();
 				$total_passed_time += $userdata->getTimeOfWork();
 			}
 		}
-		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
-		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
+
+        if (!$total_passed) {
+            return 'Nothing to display';
+        }
+
 		$average_passed_time = $total_passed ? $total_passed_time / $total_passed : 0;
 
 		$average_time = $average_passed_time;
@@ -345,11 +358,11 @@ inner join tst_test_result on tst_active.active_id = tst_test_result.active_fi
         }
 
 		$rows = array_filter($rows);
-		$average = array_sum($rows) / count($rows);
+        if (!count($rows)) {
+            return 'Nothing to display';
+        }
 
-		if (!$average) {
-			$average = 'Nothing to display';
-		}
+		$average = array_sum($rows) / count($rows);
 
 		return $average;
 	}
@@ -387,13 +400,14 @@ where passed = 1 and test_fi = " . $this->DB->quote($tst_id, "integer") . "";
         }
 
 		$rows = array_filter($rows);
-		$average = array_sum($rows) / count($rows);
+        if (!count($rows)) {
+            return 'Nothing to display';
+        }
 
-		if (!$average) {
-			$average = 'Nothing to display';
-		}
+        $average = array_sum($rows) / count($rows);
 
-		return $average;
+
+        return $average;
 	}
 
 
@@ -637,7 +651,50 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 
 	}
 
+    /**
+     * @param $ref_id
+     * @return array
+     */
+    public function getQuestionPercentage($ref_id) {
+        $test = new ilObjTest($ref_id);
+        $questions = $test->getQuestions();
 
+        $valuesreached = array();
+        foreach ($questions as $qst_id) {
+            $valuesreached[$qst_id] = $this->getTotalRightAnswersForTestQuestion($qst_id) * 100;
+        }
+        return $valuesreached;
+	}
+
+    /**
+     * @param $qst_id
+     * @return float|int
+     */
+    protected function getTotalRightAnswersForTestQuestion($qst_id) {
+        $result = $this->DB->query("SELECT * FROM tst_test_result WHERE question_fi = " . $qst_id);
+        $answers = array();
+        while ($row = $this->DB->fetchAssoc($result))
+        {
+            $reached = $row["points"];
+            $max = assQuestion::_getMaximumPoints($row["question_fi"]);
+            array_push($answers, array("reached" => $reached, "max" => $max));
+        }
+        $max = 0.0;
+        $reached = 0.0;
+        foreach ($answers as $key => $value)
+        {
+            $max += $value["max"];
+            $reached += $value["reached"];
+        }
+        if ($max > 0)
+        {
+            return $reached / $max;
+        }
+        else
+        {
+            return 0;
+        }
+	}
 
 	/**
 	 * HELPER FUNCTIONS
@@ -657,7 +714,7 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 		$select = "select test_id from object_data
 inner join object_reference on object_data.obj_id = object_reference.obj_id
 inner join tst_tests on object_data.obj_id = tst_tests.obj_fi
-where ref_id = " . $this->DB->quote($ref_id, "integer") . "";
+where ref_id = " . $this->DB->quote($ref_id, "integer");
 
 		$result = $this->DB->query($select);
 

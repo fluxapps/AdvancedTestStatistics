@@ -42,6 +42,7 @@
       "../../../../../../../Modules/Course",
       "../../../../../../../Modules/Group",
       "../../../../../../../Modules/Test",
+      "../../../../../../../Modules/TestQuestionPool",
       "../Notifications4Plugins"
     ]
   },

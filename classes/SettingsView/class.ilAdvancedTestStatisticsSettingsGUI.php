@@ -238,61 +238,44 @@ class ilAdvancedTestStatisticsSettingsGUI {
 		}
 
 		$triggername = $trigger->getTriggerName();
-		$value = $trigger->getValue();
+		$trigger_value = $trigger->getValue();
+        $operator = $trigger->getOperatorFormatted();
 
-		//if True trigger is a question
-		if(is_int($triggername)){
-			$valuereached = 0;
-		}
-		else{
-			$valuereached = ilAdvancedTestStatisticsConstantTranslator::getValues($triggername,$this->ref_id);
-		}
+        $values_reached = ilAdvancedTestStatisticsConstantTranslator::getValues($triggername,$this->ref_id);
+        $trigger_values = '';
 
-		$operator = ilAdvancedTestStatisticsConstantTranslator::getOperatorforKey($trigger->getOperator());
+        switch ($triggername) {
+            case 'qst_percentage':
+                $trigger_values .= "\n";
+                foreach ($values_reached as $qst_id => $value_reached) {
+                    if (!eval('return ' . $value_reached . ' ' . $operator . ' ' . $trigger_value . ';')) {
+                        unset($values_reached[$qst_id]);
+                    } else {
+                        $trigger_values .= '"' . assQuestion::_instanciateQuestion($qst_id)->getTitle() . '"' . ': ';
+                        $trigger_values .= $value_reached . "\n";
+                    }
+                }
 
-		switch ($operator){
-			case '<':
-				if($valuereached < $value){
-					break;
-				}
-				return false;
-			case '>':
-				if($valuereached > $value){
-					break;
-				}
-				return false;
-			case '=':
-				if($valuereached == $value){
-					break;
-				}
-				return false;
-			case '>=':
-				if($valuereached == $value){
-					break;
-				}
-				return false;
-			case '<=':
-				if($valuereached <= $value){
-					break;
-				}
-				return false;
-			case '!=':
-				if($valuereached != $value){
-					break;
-				}
-				return false;
-			default:
-			    throw new ilException('No operator given for trigger.');
-				break;
-		}
+                if (empty($values_reached)) {
+                    return false;
+                }
+                break;
+            default:
+                if (!eval('return ' . $values_reached . ' ' . $operator . ' ' . $trigger_value . ';')) {
+                    return false;
+                }
+                $trigger_values = $values_reached;
+                break;
+        }
 
-		$sender = new ilAdvancedTestStatisticsSender();
+        $sender = new ilAdvancedTestStatisticsSender();
 		try {
-		    $sender->createNotification($this->ref_id_course,$trigger);
+		    $sender->createNotification($this->ref_id_course,$trigger, $trigger_values);
 		    ilUtil::sendSuccess($this->pl->txt('system_account_msg_success_trigger'),true);
 		} catch (Exception $exception){
-
+            ilUtil::sendFailure('Error: ' . $exception->getMessage(), true);
 		}
+
 		$this->ctrl->redirect($this,self::CMD_DISPLAY_TRIGGERS);
 	}
 

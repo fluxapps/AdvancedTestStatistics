@@ -60,20 +60,34 @@ class ilAdvancedTestStatisticsConstantTranslator {
 		$id = $class->getTstidforRefid($ref_id);
 
 		switch ($key){
-			case 'avg_points_finished': return $class->getAveragePointsFinshedTests($id,$ref_id);
-			case "avg_result_passed": return $class->getAverageResultPassedTests($id,$ref_id);
-			case "avg_result_finished": return $class->getAverageResultFinishedTests($id,$ref_id);
-			case "avg_result_passed_run_one": return $class->getAverageResultPassedTestsRunOne($ref_id);
-			case "avg_result_finished_run_one": return $class->getAverageResultFinishedTestsRunOne($ref_id);
-			case "avg_result_passed_run_two": return $class->getAverageResultPassedTestsRunTwo($ref_id);
-			case "avg_result_finished_run_two": return $class->getAverageResultFinishedTestsRunTwo($ref_id);
-			case 'nr_participants_started': return $class->getTotalNumberStartedTest($ref_id);
-			case 'nr_tests_finished': return $class->getTotalFinishedTests($ref_id);
-			case 'avg_test_time': return $class->getAvgTestTime($ref_id,$id);
-			case 'nr_tests_passed': return $class->getTotalPassedTests($ref_id);
-			case 'avg_points_passed': return $class->getAveragePointsPassedTests($ref_id);
-			case 'avg_passed_test_time': return $class->getAverageTimePassedTests($ref_id);
-			default: return false;
+			case 'avg_points_finished':
+			    return $class->getAveragePointsFinshedTests($id,$ref_id);
+			case "avg_result_passed":
+			    return $class->getAverageResultPassedTests($id,$ref_id);
+			case "avg_result_finished":
+			    return $class->getAverageResultFinishedTests($id,$ref_id);
+			case "avg_result_passed_run_one":
+			    return $class->getAverageResultPassedTestsRunOne($ref_id);
+			case "avg_result_finished_run_one":
+			    return $class->getAverageResultFinishedTestsRunOne($ref_id);
+			case "avg_result_passed_run_two":
+			    return $class->getAverageResultPassedTestsRunTwo($ref_id);
+			case "avg_result_finished_run_two":
+			    return $class->getAverageResultFinishedTestsRunTwo($ref_id);
+			case 'nr_participants_started':
+			    return $class->getTotalNumberStartedTest($ref_id);
+			case 'nr_tests_finished':
+			    return $class->getTotalFinishedTests($ref_id);
+			case 'avg_test_time':
+			    return $class->getAvgTestTime($ref_id,$id);
+			case 'nr_tests_passed':
+			    return $class->getTotalPassedTests($ref_id);
+			case 'avg_points_passed':
+			    return $class->getAveragePointsPassedTests($ref_id);
+			case 'avg_passed_test_time':
+			    return $class->getAverageTimePassedTests($ref_id);
+            case 'qst_percentage':
+                return $class->getQuestionPercentage($ref_id);
 		}
 
 
