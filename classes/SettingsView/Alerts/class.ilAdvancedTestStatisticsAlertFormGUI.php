@@ -113,7 +113,7 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 
 		$te = new ilNumberInputGUI($this->pl->txt('form_user_completed'),'user_completed');
 		$te->setRequired(true);
-		$te->setInfo('Condition how many users completed the test (%) of course members');
+		$te->setInfo('The trigger is only checked if this number of users have completed the test / question');
 		$this->addItem($te);
 
 		$te = new ilDateTimeInputGUI($this->pl->txt('form_date'),'date');
@@ -126,12 +126,6 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 		$te->setInfo('The interval within the trigger is checked');
 		$te->setOptions($this->interval_options);
 		$this->addItem($te);
-
-
-
-
-
-
 	}
 
 
@@ -178,7 +172,7 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 		$this->object->setOperator($this->getInput('operator'));
 		$this->object->setValue($this->getInput('value'));
 		$this->object->setUserId(ilObjUser::_lookupId($this->getInput('user')));
-		$this->object->setUserPercentage($this->getInput('user_completed'));
+		$this->object->setUserThreshold($this->getInput('user_completed'));
 		$date = $this->getInput('date');
 		$timestamp = strtotime($date['date']);
 		$this->object->setDatesender($timestamp);
@@ -198,7 +192,7 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
             'operator' => $this->object->getOperator(),
             'value' => $this->object->getValue(),
             'user' => ilObjUser::_lookupLogin($this->object->getUserId()),
-            'user_completed' => $this->object->getUserPercentage(),
+            'user_completed' => $this->object->getUserThreshold(),
             'date' => array("date" => date('Y-m-d', $this->object->getDatesender())),
             'interval' => $this->object->getIntervalls()
         );

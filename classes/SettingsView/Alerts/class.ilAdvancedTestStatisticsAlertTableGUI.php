@@ -119,7 +119,7 @@ class ilAdvancedTestStatisticsAlertTableGUI extends ilTable2GUI {
 			$row['inform'] = $user->getLogin();
 
 
-			$row['usercomplete'] = $trigger->getUserPercentage();
+			$row['usercomplete'] = $trigger->getUserThreshold();
 
 			$date = $trigger->getDatesender();
 			$row['date'] = date("d.m.Y",$date);

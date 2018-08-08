@@ -54,12 +54,16 @@ class ilAdvancedTestStatisticsConstantTranslator {
 	}
 
 
-
-	public static function getValues($key,$ref_id){
+    /**
+     * @param $trigger xatsTriggers
+     * @return array|int|string
+     */
+	public static function getValues($trigger){
 		$class = new ilAdvancedTestStatisticsAggResults();
+		$ref_id = $trigger->getRefId();
 		$id = $class->getTstidforRefid($ref_id);
 
-		switch ($key){
+		switch ($trigger->getTriggerName()){
 			case 'avg_points_finished':
 			    return $class->getAveragePointsFinshedTests($id,$ref_id);
 			case "avg_result_passed":

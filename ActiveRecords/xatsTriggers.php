@@ -61,7 +61,7 @@ class xatsTriggers extends ActiveRecord {
 	 * @con_fieldtype   integer
 	 * @con_length      8
 	 */
-	protected $user_percentage;
+	protected $user_threshold;
 	/**
 	 * @var string
 	 *
@@ -195,16 +195,16 @@ class xatsTriggers extends ActiveRecord {
 	/**
 	 * @return int
 	 */
-	public function getUserPercentage() {
-		return $this->user_percentage;
+	public function getUserThreshold() {
+		return $this->user_threshold;
 	}
 
 
 	/**
-	 * @param int $user_percentage
+	 * @param int $user_threshold
 	 */
-	public function setUserPercentage($user_percentage) {
-		$this->user_percentage = $user_percentage;
+	public function setUserThreshold($user_threshold) {
+		$this->user_threshold = $user_threshold;
 	}
 
 

@@ -54,8 +54,6 @@ class ilAdvancedTestStatisticsSettingsGUI {
 
 		$this->tree = $tree;
 		$this->ref_id_course = $this->pl->getParentCourseId($this->ref_id);
-		$this->usr_ids = ilCourseMembers::getData($this->ref_id_course);
-
 	}
 
 
@@ -196,7 +194,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 		$xat->setOperator($trigger->getOperator());
 		$xat->setValue($trigger->getValue());
 		$xat->setUserId($trigger->getUserId());
-		$xat->setUserPercentage($trigger->getUserPercentage());
+		$xat->setUserThreshold($trigger->getUserPercentage());
 		$xat->setDatesender($trigger->getDatesender());
 		$xat->setIntervalls($trigger->getIntervalls());
 
@@ -230,10 +228,9 @@ class ilAdvancedTestStatisticsSettingsGUI {
 
 		$class = new ilAdvancedTestStatisticsAggResults();
 		$finishedtests = $class->getTotalFinishedTests($this->ref_id);
-		$course_members = count($this->usr_ids);
 
 		// Check if enough people finished the test
-		if((100/$course_members) * $finishedtests < $trigger->getUserPercentage()){
+		if($finishedtests < $trigger->getUserThreshold()){
 			return false;
 		}
 
@@ -241,7 +238,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 		$trigger_value = $trigger->getValue();
         $operator = $trigger->getOperatorFormatted();
 
-        $values_reached = ilAdvancedTestStatisticsConstantTranslator::getValues($triggername,$this->ref_id);
+        $values_reached = ilAdvancedTestStatisticsConstantTranslator::getValues($trigger);
         $trigger_values = '';
 
         switch ($triggername) {
