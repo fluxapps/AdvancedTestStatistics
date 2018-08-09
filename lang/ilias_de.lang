@@ -42,7 +42,7 @@ trigger_not_executed #:# Trigger ist nicht erfüllt
 
 subtab_agg_test_results#:#Aggregierte Testergebnisse
 subtab_avg_points#:#Durchschnittliche Punktzahl
-subtab_filters#:#Filter
+subtab_filters#:#Einstellungen
 subtab_alerts#:#Benachrichtigungen
 
 avg_points_finished#:#Durchschnittliche Punktzahl abgeschlossene Tests

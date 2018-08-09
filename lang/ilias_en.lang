@@ -43,7 +43,7 @@ system_account_msg_success_trigger#:#Trigger was satisfied.
 
 subtab_agg_test_results#:#Aggregated Test Results
 subtab_avg_points#:#Average Points
-subtab_filters#:#Filters
+subtab_filters#:#Settings
 subtab_alerts#:#Alerts
 
 avg_points_finished#:#Average Points finished tests
