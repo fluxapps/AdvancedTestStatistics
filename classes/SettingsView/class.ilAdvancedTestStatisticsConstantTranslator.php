@@ -65,31 +65,31 @@ class ilAdvancedTestStatisticsConstantTranslator {
 
 		switch ($trigger->getTriggerName()){
 			case 'avg_points_finished':
-			    return $class->getAveragePointsFinshedTests($id,$ref_id);
+			    return $class->getAveragePointsFinshedTests($id,$ref_id, true);
 			case "avg_result_passed":
-			    return $class->getAverageResultPassedTests($id,$ref_id);
+			    return $class->getAverageResultPassedTests($id,$ref_id, true);
 			case "avg_result_finished":
-			    return $class->getAverageResultFinishedTests($id,$ref_id);
+			    return $class->getAverageResultFinishedTests($id,$ref_id, true);
 			case "avg_result_passed_run_one":
-			    return $class->getAverageResultPassedTestsRunOne($ref_id);
+			    return $class->getAverageResultPassedTestsRunOne($ref_id, true);
 			case "avg_result_finished_run_one":
-			    return $class->getAverageResultFinishedTestsRunOne($ref_id);
+			    return $class->getAverageResultFinishedTestsRunOne($ref_id, true);
 			case "avg_result_passed_run_two":
-			    return $class->getAverageResultPassedTestsRunTwo($ref_id);
+			    return $class->getAverageResultPassedTestsRunTwo($ref_id, true);
 			case "avg_result_finished_run_two":
-			    return $class->getAverageResultFinishedTestsRunTwo($ref_id);
+			    return $class->getAverageResultFinishedTestsRunTwo($ref_id, true);
 			case 'nr_participants_started':
-			    return $class->getTotalNumberStartedTest($ref_id);
+			    return $class->getTotalNumberStartedTest($ref_id, true);
 			case 'nr_tests_finished':
-			    return $class->getTotalFinishedTests($ref_id);
+			    return $class->getTotalFinishedTests($ref_id, true);
 			case 'avg_test_time':
-			    return $class->getAvgTestTime($ref_id,$id);
+			    return $class->getAvgTestTime($ref_id,$id, true);
 			case 'nr_tests_passed':
-			    return $class->getTotalPassedTests($ref_id);
+			    return $class->getTotalPassedTests($ref_id, true);
 			case 'avg_points_passed':
-			    return $class->getAveragePointsPassedTests($ref_id);
+			    return $class->getAveragePointsPassedTests($ref_id, true);
 			case 'avg_passed_test_time':
-			    return $class->getAverageTimePassedTests($ref_id);
+			    return $class->getAverageTimePassedTests($ref_id, true);
             case 'qst_percentage':
                 return $class->getQuestionPercentage($ref_id);
 		}
