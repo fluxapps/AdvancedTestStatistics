@@ -157,9 +157,6 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 		$participants =& $eval->getParticipants();
 
 		$total_passed = 0;
-		$total_passed_reached = 0;
-		$total_passed_max = 0;
-		$total_passed_time = 0;
 
 		//Filter inactive users if checkbox is set
 		if ($this->checkFilterInactive($ref_id) == 1) {
@@ -183,14 +180,9 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 		foreach ($participants as $userdata) {
 			if ($userdata->getPassed()) {
 				$total_passed ++;
-				$total_passed_reached += $userdata->getReached();
-				$total_passed_max += $userdata->getMaxpoints();
-				$total_passed_time += $userdata->getTimeOfWork();
 			}
 		}
-		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
-		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
-		$average_passed_time = $total_passed ? $total_passed_time / $total_passed : 0;
+
 
 		if(!$total_passed){
 			return 'Nothing to display';
@@ -212,7 +204,6 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 		$total_passed = 0;
 		$total_passed_reached = 0;
 		$total_passed_max = 0;
-		$total_passed_time = 0;
 
 		//Filter inactive users if checkbox is set
 		if ($this->checkFilterInactive($ref_id) == 1) {
@@ -262,8 +253,6 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 		$participants =& $eval->getParticipants();
 
 		$total_passed = 0;
-		$total_passed_reached = 0;
-		$total_passed_max = 0;
 		$total_passed_time = 0;
 
 		//Filter inactive users if checkbox is set
@@ -330,41 +319,46 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 	 * @return float|int|string
 	 */
 	public function getAveragePointsFinshedTests($tst_id, $ref_id) {
+        $eval =& $this->object->getCompleteEvaluationData();
+        $participants =& $eval->getParticipants();
 
-		$select = "select user_fi,sum(points) from tst_active
-inner join tst_test_result on tst_active.active_id = tst_test_result.active_fi
- where  test_fi = " . $this->DB->quote($tst_id, "integer") . " and submitted = 1 group by active_fi, user_fi";
+        $total_passed = 0;
+        $total_passed_reached = 0;
+        $total_passed_max = 0;
 
-		$result = $this->DB->query($select);
-
-		$rows = array();
-		while ($row = $this->DB->fetchAssoc($result)) {
-
-			$rows[$row['user_fi']] = $row['sum(points)'];
-		}
-
-		//Filter inactive users if checkbox is set
-		if ($this->checkFilterInactive($ref_id) == 1) {
-			$inactive_usrs = $this->getInactiveUsers();
-			foreach ($inactive_usrs as $user) {
-				unset($rows[$user]);
-			}
-		}
-
-
-        // Filter explicitly filtered users
-        foreach ($this->getFilteredUsers() as $filtered_user) {
-            unset($rows[$filtered_user]);
+        //Filter inactive users if checkbox is set
+        if ($this->checkFilterInactive($ref_id) == 1) {
+            $inactive_usrs = $this->getInactiveUsers();
+            foreach ($participants as $key => $participant) {
+                if (key_exists($participant->getUserID(), $inactive_usrs)) {
+                    unset($participants[$key]);
+                }
+            }
         }
 
-		$rows = array_filter($rows);
-        if (!count($rows)) {
+        // Filter explicitly filtered users
+        if ($filtered_users = $this->getFilteredUsers()) {
+            foreach ($participants as $key => $participant) {
+                if (in_array($participant->getUserId(), $filtered_users)) {
+                    unset($participants[$key]);
+                }
+            }
+        }
+
+        foreach ($participants as $userdata) {
+            $total_passed ++;
+            $total_passed_reached += $userdata->getReached();
+            $total_passed_max += $userdata->getMaxpoints();
+        }
+
+        if (!$total_passed) {
             return 'Nothing to display';
         }
 
-		$average = array_sum($rows) / count($rows);
+        $average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
+        $average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
 
-		return $average;
+        return sprintf("%2.2f", $average_passed_reached) . " " . strtolower("of") . " " . sprintf("%2.2f", $average_passed_max);
 	}
 
 
