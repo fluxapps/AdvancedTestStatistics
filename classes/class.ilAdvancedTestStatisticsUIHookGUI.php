@@ -21,8 +21,18 @@ class ilAdvancedTestStatisticsUIHookGUI extends ilUIHookPluginGUI {
 	 * @var ilAdvancedTestStatisticsPlugin
 	 */
 	protected $pl;
+    /**
+     * @var ilAdvancedTestStatisticsAccess
+     */
+	protected $access;
+    /**
+     * @var
+     */
+	protected $ref_id;
 
-
+    /**
+     * ilAdvancedTestStatisticsUIHookGUI constructor.
+     */
 	public function __construct() {
 		global $ilCtrl, $tpl;
 
@@ -31,11 +41,6 @@ class ilAdvancedTestStatisticsUIHookGUI extends ilUIHookPluginGUI {
 		$this->tpl = $tpl;
 		$this->ref_id = $_GET['ref_id'];
 		$this->access = new ilAdvancedTestStatisticsAccess($this->ref_id);
-	}
-
-
-	function getHTML($a_comp, $a_part, $a_par = array()) {
-
 	}
 
 
@@ -105,7 +110,9 @@ class ilAdvancedTestStatisticsUIHookGUI extends ilUIHookPluginGUI {
 		}
 	}
 
-
+    /**
+     * @return bool
+     */
 	function checkTest() {
 		foreach ($this->ctrl->getCallHistory() as $GUIClassesArray) {
 			if ($GUIClassesArray['class'] == 'ilTestEvaluationGUI') {

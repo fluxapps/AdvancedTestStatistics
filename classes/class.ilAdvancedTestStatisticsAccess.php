@@ -12,17 +12,23 @@ class ilAdvancedTestStatisticsAccess {
 	 */
 	protected $ref_id;
 
-
+    /**
+     * ilAdvancedTestStatisticsAccess constructor.
+     * @param $ref_id
+     */
 	public function __construct($ref_id) {
 		$this->pl = ilAdvancedTestStatisticsPlugin::getInstance();
 		$this->ref_id = $ref_id;
 	}
 
-
+    /**
+     * @return bool
+     */
 	public function hasCurrentUserAlertAccess() {
-		global $ilAccess;
+		/** @var $ilAccess ilAccessHandler */
+	    global $ilAccess;
 
-		if ($ilAccess->checkAccess("statistics", "", $this->ref_id)) {
+		if ($ilAccess->checkAccess("tst_statistics", "", $this->ref_id)) {
 			return true;
 		}
 
