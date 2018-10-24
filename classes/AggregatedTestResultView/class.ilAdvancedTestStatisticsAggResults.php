@@ -61,7 +61,7 @@ class ilAdvancedTestStatisticsAggResults {
 	 *
 	 * @return mixed
 	 */
-	public function getTotalFinishedTests($ref_id, $as_number) {
+	public function getTotalFinishedTests($ref_id, $as_number = false) {
 		global $ilDB;
 
 		$select = "select user_fi from object_data
@@ -71,6 +71,7 @@ inner join tst_active on tst_tests.test_id = tst_active.test_fi
 where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 
 		$result = $ilDB->query($select);
+        $rows = [];
 		while ($row = $ilDB->fetchAssoc($result)) {
 			$active_count = $row['user_fi'];
 			$rows[$active_count] = $active_count;
@@ -104,7 +105,7 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 	 *
 	 * @return string
 	 */
-	public function getAvgTestTime($ref_id, $tst_id, $as_number) {
+	public function getAvgTestTime($ref_id, $tst_id, $as_number = false) {
 		global $ilDB;
 
 		$inactive_usrs = $this->getInactiveUsers();
@@ -131,11 +132,8 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 			$max_time += $value;
 			$counter ++;
 		}
-		if ($counter) {
-			$average_time = round($max_time / $counter);
-		} else {
-			$average_time = 0;
-		}
+
+		$average_time = $counter ? round($max_time / $counter) : 0;
 
 		if ($as_number) {
 		    return $average_time;
@@ -156,7 +154,7 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 	 *
 	 * @return int
 	 */
-	public function getTotalPassedTests($ref_id, $as_number) {
+	public function getTotalPassedTests($ref_id, $as_number = false) {
 		$eval =& $this->object->getCompleteEvaluationData();
 		$participants =& $eval->getParticipants();
 
@@ -201,7 +199,7 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 	 *
 	 * @return string
 	 */
-	public function getAveragePointsPassedTests($ref_id, $as_number) {
+	public function getAveragePointsPassedTests($ref_id, $as_number = false) {
 		$eval =& $this->object->getCompleteEvaluationData();
 		$participants =& $eval->getParticipants();
 
@@ -256,7 +254,7 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 	 *
 	 * @return string
 	 */
-	public function getAverageTimePassedTests($ref_id, $as_number) {
+	public function getAverageTimePassedTests($ref_id, $as_number = false) {
 		$eval =& $this->object->getCompleteEvaluationData();
 		$participants =& $eval->getParticipants();
 
@@ -330,7 +328,7 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 	 *
 	 * @return float|int|string
 	 */
-	public function getAveragePointsFinshedTests($tst_id, $ref_id, $as_number) {
+	public function getAveragePointsFinshedTests($tst_id, $ref_id, $as_number = false) {
         $eval =& $this->object->getCompleteEvaluationData();
         $participants =& $eval->getParticipants();
 
@@ -384,14 +382,14 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 	 *
 	 * @return float|int|string
 	 */
-	public function getAverageResultPassedTests($tst_id, $ref_id, $as_number) {
+	public function getAverageResultPassedTests($tst_id, $ref_id, $as_number = false) {
 		$select = "select * from tst_active
 inner join tst_result_cache on tst_active.active_id = tst_result_cache.active_fi
 where passed = 1 and test_fi = " . $this->DB->quote($tst_id, "integer");
 
 		$result = $this->DB->query($select);
 
-		$rows = array();
+		$rows = [];
 		while ($row = $this->DB->fetchAssoc($result)) {
 			$rows[$row['user_fi']] = (100 / $row['max_points']) * $row['reached_points'];
 		}
@@ -414,7 +412,7 @@ where passed = 1 and test_fi = " . $this->DB->quote($tst_id, "integer");
             return $as_number ? 0 : 'Nothing to display';
         }
 
-        $average = array_sum($rows) / count($rows);
+        $average = count($rows) ? (array_sum($rows) / count($rows)) : 0;
 
 
         return $average;
@@ -427,7 +425,7 @@ where passed = 1 and test_fi = " . $this->DB->quote($tst_id, "integer");
 	 *
 	 * @return float|int|string
 	 */
-	public function getAverageResultFinishedTests($tst_id, $ref_id, $as_number) {
+	public function getAverageResultFinishedTests($tst_id, $ref_id, $as_number = false) {
 
 		$select = "select user_fi, points, maxpoints from tst_active
 inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
@@ -453,7 +451,7 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
             unset($rows[$filtered_user]);
         }
 
-		$average = array_sum($rows) / count($rows);
+		$average = count($rows) ? (array_sum($rows) / count($rows)) : 0;
 
 		if (!$average) {
 			$average = $as_number ? 0 : 'Nothing to display';
@@ -468,7 +466,7 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 	 *
 	 * @return string
 	 */
-	public function getAverageResultPassedTestsRunOne($ref_id, $as_number){
+	public function getAverageResultPassedTestsRunOne($ref_id, $as_number = false){
 
 		$eval =& $this->object->getCompleteEvaluationData();
 		$participants =& $eval->getParticipants();
@@ -511,7 +509,7 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
 		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
 
-		$result = ($average_passed_reached/$average_passed_max) * 100;
+		$result = $total_passed ? (($average_passed_reached/$average_passed_max) * 100) : 0;
 
 		return $result;
 	}
@@ -522,7 +520,7 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 	 *
 	 * @return string
 	 */
-	public function getAverageResultPassedTestsRunTwo($ref_id, $as_number){
+	public function getAverageResultPassedTestsRunTwo($ref_id, $as_number = false){
 
 		$eval =& $this->object->getCompleteEvaluationData();
 		$participants =& $eval->getParticipants();
@@ -565,7 +563,7 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
 		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
 
-        $result = ($average_passed_reached/$average_passed_max) * 100;
+        $result = $average_passed_max ? (($average_passed_reached/$average_passed_max) * 100) : 0;
 
 		return $result;
 	}
@@ -576,7 +574,7 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 	 *
 	 * @return string
 	 */
-	public function getAverageResultFinishedTestsRunOne($ref_id, $as_number){
+	public function getAverageResultFinishedTestsRunOne($ref_id, $as_number = false){
 
 		$eval =& $this->object->getCompleteEvaluationData();
 		$participants =& $eval->getParticipants();
@@ -620,7 +618,7 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
 		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
 
-		$result = ($average_passed_reached/$average_passed_max) * 100;
+		$result = $average_passed_max ? (($average_passed_reached/$average_passed_max) * 100) : 0;
 
         return $result;
 	}
@@ -631,7 +629,7 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 	 *
 	 * @return string
 	 */
-	public function getAverageResultFinishedTestsRunTwo($ref_id, $as_number){
+	public function getAverageResultFinishedTestsRunTwo($ref_id, $as_number = false){
 
 		$eval =& $this->object->getCompleteEvaluationData();
 		$participants =& $eval->getParticipants();
@@ -675,7 +673,7 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
 		$average_passed_reached = $total_passed ? $total_passed_reached / $total_passed : 0;
 		$average_passed_max = $total_passed ? $total_passed_max / $total_passed : 0;
 
-        $result = ($average_passed_reached/$average_passed_max) * 100;
+        $result = $average_passed_max ? (($average_passed_reached/$average_passed_max) * 100) : 0;
 
 		return $result;
 

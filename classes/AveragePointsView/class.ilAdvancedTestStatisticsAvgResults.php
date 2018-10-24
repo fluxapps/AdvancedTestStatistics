@@ -71,7 +71,7 @@ class ilAdvancedTestStatisticsAvgResults {
 				$percent / 100.0
 			);
 		}
-		return $results;
+		return $results ? $results : ['questions' => []];
 
 	}
 

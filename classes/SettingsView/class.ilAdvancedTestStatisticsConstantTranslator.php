@@ -59,8 +59,8 @@ class ilAdvancedTestStatisticsConstantTranslator {
      * @return array|int|string
      */
 	public static function getValues($trigger){
-		$class = new ilAdvancedTestStatisticsAggResults();
-		$ref_id = $trigger->getRefId();
+        $ref_id = $trigger->getRefId();
+        $class = new ilAdvancedTestStatisticsAggResults($ref_id);
 		$id = $class->getTstidforRefid($ref_id);
 
 		switch ($trigger->getTriggerName()){
