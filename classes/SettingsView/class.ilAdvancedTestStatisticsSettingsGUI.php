@@ -48,7 +48,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 		$this->ref_id = $_GET['ref_id'];
 		$this->tabs = $ilTabs;
 		$this->pl = ilAdvancedTestStatisticsPlugin::getInstance();
-		$this->ctrl->saveParameterByClass($this,'ref_id');
+		$this->ctrl->saveParameter($this,'ref_id');
 		$this->ctrl->setParameterByClass(ilAdvancedTestStatisticsSettingsGUI::class,'ref_id',$this->ref_id);
 		$this->test = ilObjectFactory::getInstanceByRefId($this->ref_id);
 
@@ -112,7 +112,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 			$this->ctrl->redirect(new ilAdvancedTestStatisticsSettingsGUI, ilAdvancedTestStatisticsSettingsGUI::CMD_DISPLAY_FILTER);
 		}
 		$this->tpl->setContent($form->getHTML());
-
+        $this->tpl->show();
 	}
 
 
@@ -162,7 +162,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
         }
 
         $this->tpl->setContent($form->getHTML());
-
+        $this->tpl->show();
 	}
 
 	/**
@@ -178,7 +178,8 @@ class ilAdvancedTestStatisticsSettingsGUI {
         }
 
         $this->tpl->setContent($form->getHTML());
-	}
+        $this->tpl->show();
+    }
 
 
 	/**
