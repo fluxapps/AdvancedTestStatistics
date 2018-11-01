@@ -9,7 +9,7 @@ cols_id #:# ID
 cols_title #:# Trigger
 cols_operator #:# Operator
 cols_value #:# Value
-cols_inform #:#Notified User
+cols_inform #:#Notified user
 cols_date #:# Date
 cols_interval #:# Interval
 cols_usercomplete #:# Users completed threshold
@@ -46,7 +46,7 @@ subtab_avg_points#:#Average Points
 subtab_filters#:#Settings
 subtab_alerts#:#Alerts
 
-avg_points_finished#:#Average Points finished tests
+avg_points_finished#:#Average points finished tests
 avg_points_passed#:#Average points of passed tests
 avg_result_passed#:#Average result (%) passed tests
 avg_result_finished#:#Average result (%) finished tests
@@ -57,9 +57,9 @@ avg_result_finished_run_two#:#Average result (%) finished tests (Run 2)
 avg_test_time#:#Average test processing time
 avg_passed_test_time#:#Average processing time of all passed tests
 nr_participants_started#:#Total number of participants who started the test
-nr_tests_finished#:#Total finished tests (Participants that used up all possible passes)
+nr_tests_finished#:#Total finished tests (participants that used up all possible passes)
 nr_tests_passed#:#Total passed tests
-qst_percentage#:#Question Percentage
+qst_percentage#:#Question percentage
 
 input_dont_count_inactive#:#Do not count inactive users
-input_filter_users#:#Filter Users from statistics
+input_filter_users#:#Filter users from statistics
