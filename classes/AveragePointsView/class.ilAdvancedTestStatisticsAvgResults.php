@@ -29,10 +29,10 @@ class ilAdvancedTestStatisticsAvgResults {
 		//Filter inactive users if checkbox is set
 		if ($this->checkFilterInactive($ref_id) == 1) {
 			$inactive_usrs = $this->getInactiveUsers();
-			foreach ($foundParticipants as $participant) {
+			foreach ($foundParticipants as $key => $participant) {
+			    /** @var $participant ilTestEvaluationUserData */
 				if (key_exists($participant->getUserID(), $inactive_usrs)) {
-					$key = key($participant);
-					unset($key, $foundParticipants);
+					unset($foundParticipants[$key]);
 				}
 			}
 		}
