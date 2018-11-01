@@ -391,7 +391,7 @@ where passed = 1 and test_fi = " . $this->DB->quote($tst_id, "integer");
 
 		$rows = [];
 		while ($row = $this->DB->fetchAssoc($result)) {
-			$rows[$row['user_fi']] = (100 / $row['max_points']) * $row['reached_points'];
+			$rows[$row['user_fi']] = (100 / $row['maxpoints']) * $row['reached_points'];
 		}
 
 		//Filter inactive users if checkbox is set
@@ -429,7 +429,7 @@ where passed = 1 and test_fi = " . $this->DB->quote($tst_id, "integer");
 
 		$select = "select user_fi, points, maxpoints from tst_active
 inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
- where  submitted = 1 AND test_fi = " . $this->DB->quote($tst_id, "integer");
+ where test_fi = " . $this->DB->quote($tst_id, "integer");
 
 		$result = $this->DB->query($select);
 
