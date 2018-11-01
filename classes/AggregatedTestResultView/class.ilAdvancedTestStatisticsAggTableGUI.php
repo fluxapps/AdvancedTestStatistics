@@ -100,10 +100,10 @@ class ilAdvancedTestStatisticsAggTableGUI extends ilTable2GUI {
 			}
 		}
 		if ($ext_fields->isAvgResultPassedRunOne() == 1) {
-			$data['avg_result_finished_run_one'] = round($class->getAverageResultPassedTestsRunOne($this->ref_id)) . '%';
+			$data['avg_result_passed_run_one'] = round($class->getAverageResultPassedTestsRunOne($this->ref_id)) . '%';
 		}
 		if ($ext_fields->isAvgResultFinishedRunOne() == 1) {
-			$data['avg_result_passed_run_one'] = round($class->getAverageResultFinishedTestsRunOne($this->ref_id)). '%';
+			$data['avg_result_finished_run_one'] = round($class->getAverageResultFinishedTestsRunOne($this->ref_id)). '%';
 		}
 		if ($ext_fields->isAvgResultPassedRunTwo() == 1) {
 			$data['avg_result_passed_run_two'] = round($class->getAverageResultPassedTestsRunTwo($this->ref_id)). '%';
