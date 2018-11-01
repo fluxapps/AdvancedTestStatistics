@@ -495,10 +495,15 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
         }
 
 		foreach ($participants as $userdata) {
-			if ($userdata->getPassed()) {
+            /**
+             * @var ilTestEvaluationUserData $userdata
+             * @var ilTestEvaluationPassData $pass_data_run_1
+             */
+            $pass_data_run_1 = $userdata->getPass(0);
+			if ($pass_data_run_1 && $pass_data_run_1->getPass()) {
 				$total_passed ++;
-				$total_passed_reached += $userdata->getReached();
-				$total_passed_max += $userdata->getMaxpoints();
+				$total_passed_reached += $pass_data_run_1->getReachedPoints();
+				$total_passed_max += $pass_data_run_1->getMaxPoints();
 			}
 		}
 
@@ -549,10 +554,15 @@ inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
         }
 
 		foreach ($participants as $userdata) {
-			if ($userdata->getPassed()) {
+		    /**
+             * @var ilTestEvaluationUserData $userdata
+             * @var ilTestEvaluationPassData $pass_data_run_2
+             */
+		    $pass_data_run_2 = $userdata->getPass(1);
+			if ($pass_data_run_2 && $pass_data_run_2->getPass()) {
 				$total_passed ++;
-				$total_passed_reached += $userdata->getReached();
-				$total_passed_max += $userdata->getMaxpoints();
+				$total_passed_reached += $pass_data_run_2->getReachedPoints();
+				$total_passed_max += $pass_data_run_2->getMaxPoints();
 			}
 		}
 

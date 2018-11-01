@@ -84,7 +84,10 @@ class ilAdvancedTestStatisticsFilterFormGUI extends ilPropertyFormGUI {
 	}
 
 
-	public function initForm() {
+    /**
+     *
+     */
+    public function initForm() {
 		$this->setTarget('_top');
 		$this->setFormAction($this->ctrl->getFormAction($this->parent_gui));
 		$this->initButtons();
@@ -117,12 +120,17 @@ class ilAdvancedTestStatisticsFilterFormGUI extends ilPropertyFormGUI {
 	}
 
 
-	public function initButtons() {
+    /**
+     *
+     */
+    public function initButtons() {
 		$this->addCommandButton(ilAdvancedTestStatisticsSettingsGUI::CMD_UPDATE_FILTER, $this->pl->txt('form_update'));
 		$this->addCommandButton(ilAdvancedTestStatisticsSettingsGUI::CMD_CANCEL, $this->pl->txt('form_cancel'));
 	}
 
-
+    /**
+     * @return bool
+     */
 	public function save() {
 		if (!$this->fill()) {
 			return false;
@@ -158,6 +166,9 @@ class ilAdvancedTestStatisticsFilterFormGUI extends ilPropertyFormGUI {
 	}
 
 
+    /**
+     * @return bool
+     */
 	public function fill() {
 		if (!$this->checkInput()) {
 			return false;
@@ -178,7 +189,9 @@ class ilAdvancedTestStatisticsFilterFormGUI extends ilPropertyFormGUI {
 		return true;
 	}
 
-
+    /**
+     *
+     */
 	public function fillForm() {
         $users = xatsFilteredUsers::where(array('ref_id' => $this->ref_id))->getArray();
         $users_array = array();
@@ -200,12 +213,14 @@ class ilAdvancedTestStatisticsFilterFormGUI extends ilPropertyFormGUI {
 		$this->setValuesByArray($values);
 	}
 
-
+    /**
+     * @return array
+     */
 	public function stripUsers() {
 		$users = $this->getInput("user");
 
 		if ($users[0] == "") {
-			return false;
+			return [];
 		}
 
 		$users = explode(',', $users);
