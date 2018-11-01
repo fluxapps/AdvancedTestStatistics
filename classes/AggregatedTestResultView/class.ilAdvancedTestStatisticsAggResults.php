@@ -500,11 +500,15 @@ inner join tst_result_cache on tst_active.active_id = tst_result_cache.active_fi
              * @var ilTestEvaluationPassData $pass_data_run_1
              */
             $pass_data_run_1 = $userdata->getPass(0);
-			if ($pass_data_run_1 && $pass_data_run_1->getPass()) {
-				$total_passed ++;
-				$total_passed_reached += $pass_data_run_1->getReachedPoints();
-				$total_passed_max += $pass_data_run_1->getMaxPoints();
-			}
+            $reached_points = $pass_data_run_1->getReachedPoints();
+            $max_points = $pass_data_run_1->getMaxPoints();
+            $percentage = ($reached_points / $max_points) * 100;
+            $mark = ASS_MarkSchema::_getMatchingMarkFromObjId(ilObjTest::_lookupObjectId($ref_id), $percentage);
+            if ($mark['passed']) {
+                $total_passed ++;
+                $total_passed_reached += $reached_points;
+                $total_passed_max += $max_points;
+            }
 		}
 
 		if (!$total_passed) {
@@ -559,11 +563,15 @@ inner join tst_result_cache on tst_active.active_id = tst_result_cache.active_fi
              * @var ilTestEvaluationPassData $pass_data_run_2
              */
 		    $pass_data_run_2 = $userdata->getPass(1);
-			if ($pass_data_run_2 && $pass_data_run_2->getPass()) {
-				$total_passed ++;
-				$total_passed_reached += $pass_data_run_2->getReachedPoints();
-				$total_passed_max += $pass_data_run_2->getMaxPoints();
-			}
+            $reached_points = $pass_data_run_2->getReachedPoints();
+            $max_points = $pass_data_run_2->getMaxPoints();
+            $percentage = ($reached_points / $max_points) * 100;
+            $mark = ASS_MarkSchema::_getMatchingMarkFromObjId(ilObjTest::_lookupObjectId($ref_id), $percentage);
+            if ($mark['passed']) {
+                $total_passed ++;
+                $total_passed_reached += $reached_points;
+                $total_passed_max += $max_points;
+            }
 		}
 
 		if (!$total_passed) {
@@ -810,4 +818,5 @@ where ref_id = " . $this->DB->quote($ref_id, "integer");
 
 		return $is_filter;
 	}
+
 }
