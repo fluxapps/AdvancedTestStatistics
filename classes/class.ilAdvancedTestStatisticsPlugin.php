@@ -16,12 +16,18 @@ class ilAdvancedTestStatisticsPlugin extends ilUserInterfaceHookPlugin
 	 */
 	protected static $instance;
 
-	function getPluginName()
+    /**
+     * @return string
+     */
+    function getPluginName()
 	{
 		return "AdvancedTestStatistics";
 	}
 
-	public static function getInstance(){
+    /**
+     * @return ilAdvancedTestStatisticsPlugin
+     */
+    public static function getInstance(){
 
 		if(is_null(self::$instance)){
 			self::$instance = new self();
@@ -30,7 +36,10 @@ class ilAdvancedTestStatisticsPlugin extends ilUserInterfaceHookPlugin
 	}
 
 
-	public function executeCommand() {
+    /**
+     *
+     */
+    public function executeCommand() {
 		global $ilCtrl;
 		$cmd = $ilCtrl->getCmd();
 		switch ($cmd) {
@@ -94,6 +103,14 @@ class ilAdvancedTestStatisticsPlugin extends ilUserInterfaceHookPlugin
         return $ref_id;
     }
 
+    /**
+     * @param $ref_id
+     * @return array
+     * @throws Exception
+     */
+    public function getCourseMembers($ref_id) {
+        return $this->getParentCourse($ref_id)->getMembersObject()->getMembers();
+    }
 
 }
 

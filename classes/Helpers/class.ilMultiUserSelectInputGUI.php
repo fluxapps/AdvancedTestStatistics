@@ -6,12 +6,27 @@ require_once("class.ilMultiSelectSearchInputGUI.php");
  * This class allows you to easily make an input gui where you can add multiple users. There is no default security check, as by default the link for the ajax request is
  * made via the ilUIPluginRouterGUI. If you want a permission check, which is highly recommended, set the Ajax Link via your own GUI using setAjaxLink and route to this class's searchUser method.
  *
+ * TT: Adjusted for AdvancedTestStatistics-Plugin - only finds users enlisted in the course
+ *
  * @author: Martin Studer <ms@studer-raimann.ch>
  *
  * @ilCtrl_IsCalledBy ilMultiUserSelectInputGUI: ilUIPluginRouterGUI
  * @ilCtrl_Calls ilMultiUserSelectInputGUI: ilUIPluginRouterGUI
  */
 class ilMultiUserSelectInputGUI extends ilMultiSelectSearchInputGUI{
+
+    /**
+     * @var ilCtrl|mixed
+     */
+    protected $ctrl;
+    /**
+     * @var ilDB|ilDBInterface
+     */
+    protected $db;
+    /**
+     * @var ilAdvancedTestStatisticsPlugin
+     */
+    protected $pl;
 
 	public function __construct($title = "", $post_var = ""){
 		global $ilCtrl, $ilDB;
@@ -23,6 +38,8 @@ class ilMultiUserSelectInputGUI extends ilMultiSelectSearchInputGUI{
 		 */
 		$this->ctrl = $ilCtrl;
 		$this->db = $ilDB;
+		$this->pl = ilAdvancedTestStatisticsPlugin::getInstance();
+		$this->ctrl->setParameter($this, 'ref_id', $_GET['ref_id']);
 		$this->setAjaxLink($this->ctrl->getLinkTargetByClass(array("ilUIPluginRouterGUI","ilMultiUserSelectInputGUI"), "searchUsers"));
 		$this->setInputTemplate(new ilTemplate("tpl.multiple_user_select.html", true, true,"Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/AdvancedTestStatistics"));
 		$this->setMinimumInputLength(3);
@@ -94,6 +111,9 @@ class ilMultiUserSelectInputGUI extends ilMultiSelectSearchInputGUI{
 		$result = array();
 		$i = 0;
 		foreach($users as $user){
+		    if (!in_array($user['usr_id'], $this->pl->getCourseMembers($_GET['ref_id']))) {
+		        continue;
+            }
 			$i++;
 			$result[] = $this->parseUserRow($user);
 			if($i > $page_limit)
