@@ -58,10 +58,10 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
             "avg_result_finished_run_two" => $this->pl->txt("avg_result_finished_run_two"),
             'nr_participants_started' => $this->pl->txt('nr_participants_started'),
             'nr_tests_finished' => $this->pl->txt('nr_tests_finished'),
-            'avg_test_time' => $this->pl->txt('avg_test_time'),
+            'avg_test_time' => $this->pl->txt('avg_test_time_in_s'),
             'nr_tests_passed' => $this->pl->txt('nr_tests_passed'),
             'avg_points_passed' => $this->pl->txt('avg_points_passed'),
-            'avg_passed_test_time' => $this->pl->txt('avg_passed_test_time'),
+            'avg_passed_test_time' => $this->pl->txt('avg_passed_test_time_in_s'),
             'qst_percentage' => $this->pl->txt('qst_percentage')
         );
 
