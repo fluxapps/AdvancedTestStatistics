@@ -708,12 +708,12 @@ inner join tst_result_cache on tst_active.active_id = tst_result_cache.active_fi
      * @return array
      */
     public function getQuestionPercentage($ref_id) {
-        $test = new ilObjTest($ref_id);
-        $questions = $test->getQuestions();
+        $class = new ilAdvancedTestStatisticsAvgResults();
+        $data = $class->getQuestionsFiltered($ref_id);
 
         $valuesreached = array();
-        foreach ($questions as $qst_id) {
-            $valuesreached[$qst_id] = $this->getTotalRightAnswersForTestQuestion($qst_id) * 100;
+        foreach ($data['questions'] as $qst_id => $values) {
+            $valuesreached[$qst_id] = rtrim($values[2], '%');
         }
         return $valuesreached;
 	}
