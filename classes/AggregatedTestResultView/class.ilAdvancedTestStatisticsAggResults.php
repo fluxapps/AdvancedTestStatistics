@@ -500,6 +500,9 @@ inner join tst_result_cache on tst_active.active_id = tst_result_cache.active_fi
              * @var ilTestEvaluationPassData $pass_data_run_1
              */
             $pass_data_run_1 = $userdata->getPass(0);
+            if (!$pass_data_run_1) {
+                continue;
+            }
             $reached_points = $pass_data_run_1->getReachedPoints();
             $max_points = $pass_data_run_1->getMaxPoints();
             $percentage = ($reached_points / $max_points) * 100;
@@ -563,6 +566,9 @@ inner join tst_result_cache on tst_active.active_id = tst_result_cache.active_fi
              * @var ilTestEvaluationPassData $pass_data_run_2
              */
 		    $pass_data_run_2 = $userdata->getPass(1);
+		    if (!$pass_data_run_2) {
+		        continue;
+            }
             $reached_points = $pass_data_run_2->getReachedPoints();
             $max_points = $pass_data_run_2->getMaxPoints();
             $percentage = ($reached_points / $max_points) * 100;
