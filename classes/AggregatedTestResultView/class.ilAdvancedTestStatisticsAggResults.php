@@ -384,14 +384,14 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 	 */
 	public function getAverageResultPassedTests($tst_id, $ref_id, $as_number = false) {
 		$select = "select * from tst_active
-inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
+inner join tst_result_cache on tst_active.active_id = tst_result_cache.active_fi
 where passed = 1 and test_fi = " . $this->DB->quote($tst_id, "integer");
 
 		$result = $this->DB->query($select);
 
 		$rows = [];
 		while ($row = $this->DB->fetchAssoc($result)) {
-			$rows[$row['user_fi']] = (100 / $row['maxpoints']) * $row['points'];
+			$rows[$row['user_fi']] = (100 / $row['max_points']) * $row['reached_points'];
 		}
 
 		//Filter inactive users if checkbox is set
@@ -427,15 +427,15 @@ where passed = 1 and test_fi = " . $this->DB->quote($tst_id, "integer");
 	 */
 	public function getAverageResultFinishedTests($tst_id, $ref_id, $as_number = false) {
 
-		$select = "select user_fi, points, points from tst_active
-inner join tst_pass_result on tst_active.active_id = tst_pass_result.active_fi
+		$select = "select user_fi, max_points, reached_points from tst_active
+inner join tst_result_cache on tst_active.active_id = tst_result_cache.active_fi
  where test_fi = " . $this->DB->quote($tst_id, "integer");
 
 		$result = $this->DB->query($select);
 
 		$rows = array();
 		while ($row = $this->DB->fetchAssoc($result)) {
-			$rows[$row['user_fi']] = (100 / $row['maxpoints']) * $row['points'];
+			$rows[$row['user_fi']] = (100 / $row['max_points']) * $row['reached_points'];
 		}
 
 		//Filter inactive users if checkbox is set
