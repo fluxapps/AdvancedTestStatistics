@@ -17,15 +17,13 @@ class ilAdvancedTestStatisticsSender {
      * @return Exception
      */
 	public function createNotification($course_id, xatsTriggers $trigger, $trigger_values){
-        global $ilCtrl;
 		$sender = new srNotificationInternalMailSender(new ilObjUser(6), new ilObjUser($trigger->getUserId()));
         $test = new ilObjTest($trigger->getRefId(),true);
 
-        $ilCtrl->setParameterByClass('ilObjTestGUI', 'ref_id', $trigger->getRefId());
 		$placeholders = array(
 		    'course' => new ilObjCourse($course_id,true),
             'test' => $test,
-            'test_url' => ILIAS_HTTP_PATH . '/' . $ilCtrl->getLinkTargetByClass('ilObjTestGUI'),
+            'test_url' => ILIAS_HTTP_PATH . '/goto.php?target=tst_' . $trigger->getRefId() . '&client_id=' . CLIENT_ID,
             'trigger' => $trigger,
             'trigger_values' => $trigger_values
         );
