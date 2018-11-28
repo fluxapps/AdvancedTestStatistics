@@ -129,22 +129,26 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
             }
         }
 
-        $sum_avg_time_of_work = 0;
+        $sum_time_of_work = 0;
+        $pass_count = 0;
         foreach ($participants as $participant) {
-            $sum_avg_time_of_work += $participant->getNumberOfQuestions() ? $participant->getTimeOfWork() / $participant->getNumberOfQuestions() : 0;
+            foreach ($participant->getPasses() as $pass) {
+                $sum_time_of_work += $pass->getWorkingTime();
+                $pass_count++;
+            }
         }
 
-        $avg_time_of_work = count($participants) ? $sum_avg_time_of_work / count($participants) : 0;
+        $avg_processing_time = $pass_count ? $sum_time_of_work / $pass_count : 0;
 
         if ($as_number) {
-            return $avg_time_of_work;
+            return $avg_processing_time;
         }
 
-        if ($avg_time_of_work == 0) {
+        if ($avg_processing_time == 0) {
             return 'Nothing to display';
         }
 
-        $diff_seconds = $avg_time_of_work;
+        $diff_seconds = $avg_processing_time;
 		$diff_hours = floor($diff_seconds / 3600);
 		$diff_seconds -= $diff_hours * 3600;
 		$diff_minutes = floor($diff_seconds / 60);
