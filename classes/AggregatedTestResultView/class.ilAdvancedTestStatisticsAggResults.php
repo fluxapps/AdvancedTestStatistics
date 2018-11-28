@@ -10,6 +10,15 @@
 class ilAdvancedTestStatisticsAggResults {
 
     /**
+     * @var ilDB|ilDBInterface
+     */
+    protected $DB;
+    /**
+     * @var ilObjTest
+     */
+    protected $object;
+
+    /**
      * ilAdvancedTestStatisticsAggResults constructor.
      * @param int $ref_id
      */
@@ -106,40 +115,36 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 	 * @return string
 	 */
 	public function getAvgTestTime($ref_id, $tst_id, $as_number = false) {
-		global $ilDB;
-
-		$inactive_usrs = $this->getInactiveUsers();
-		$result = $ilDB->queryF("SELECT tst_times.*,user_fi FROM tst_active, tst_times WHERE tst_active.test_fi = %s AND tst_active.active_id = tst_times.active_fi", array( 'integer' ), array( $tst_id ));
-		$times = array();
-		while ($row = $ilDB->fetchObject($result)) {
-			//Filter inactive users if checkbox is set
-			if (!($this->checkFilterInactive($ref_id) == 1 && key_exists($row->user_fi, $inactive_usrs)) && !in_array($row->user_fi, $this->getInactiveUsers()) && !in_array($row->user_fi, $this->getFilteredUsers())) {
-                preg_match("/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/", $row->started, $matches);
-                $epoch_1 = mktime($matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1]);
-                preg_match("/(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})/", $row->finished, $matches);
-                $epoch_2 = mktime($matches[4], $matches[5], $matches[6], $matches[2], $matches[3], $matches[1]);
-                $times[$row->active_fi] += ($epoch_2 - $epoch_1);
-			}
-		}
-
-		if (empty($times)) {
-            return $as_number ? 0 : 'Nothing to display';
+        $eval =& $this->object->getCompleteEvaluationData();
+        /** @var ilTestEvaluationUserData[] $participants */
+        $participants = $eval->getParticipants();
+        if($this->checkFilterInactive($ref_id) == 1){
+            $inactive_users = $this->getInactiveUsers();
+            foreach ($inactive_users as $inactive_user) {
+                foreach ($participants as $key => $participant){
+                    if($inactive_user == $participant->getUserId()){
+                        unset($participants[$key]);
+                    }
+                }
+            }
         }
 
-		$max_time = 0;
-		$counter = 0;
-		foreach ($times as $key => $value) {
-			$max_time += $value;
-			$counter ++;
-		}
-
-		$average_time = $counter ? round($max_time / $counter) : 0;
-
-		if ($as_number) {
-		    return $average_time;
+        $sum_avg_time_of_work = 0;
+        foreach ($participants as $participant) {
+            $sum_avg_time_of_work += $participant->getNumberOfQuestions() ? $participant->getTimeOfWork() / $participant->getNumberOfQuestions() : 0;
         }
 
-		$diff_seconds = $average_time;
+        $avg_time_of_work = count($participants) ? $sum_avg_time_of_work / count($participants) : 0;
+
+        if ($as_number) {
+            return $avg_time_of_work;
+        }
+
+        if ($avg_time_of_work == 0) {
+            return 'Nothing to display';
+        }
+
+        $diff_seconds = $avg_time_of_work;
 		$diff_hours = floor($diff_seconds / 3600);
 		$diff_seconds -= $diff_hours * 3600;
 		$diff_minutes = floor($diff_seconds / 60);
