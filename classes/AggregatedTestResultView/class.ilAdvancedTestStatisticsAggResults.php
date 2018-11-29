@@ -118,6 +118,8 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
         $eval =& $this->object->getCompleteEvaluationData();
         /** @var ilTestEvaluationUserData[] $participants */
         $participants = $eval->getParticipants();
+
+        // Filter inactive
         if($this->checkFilterInactive($ref_id) == 1){
             $inactive_users = $this->getInactiveUsers();
             foreach ($inactive_users as $inactive_user) {
@@ -129,9 +131,19 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
             }
         }
 
+        // Filter explicitly filtered users
+        if ($filtered_users = $this->getFilteredUsers()) {
+            foreach ($participants as $key => $participant) {
+                if (in_array($participant->getUserId(), $filtered_users)) {
+                    unset($participants[$key]);
+                }
+            }
+        }
+
         $sum_time_of_work = 0;
         $pass_count = 0;
         foreach ($participants as $participant) {
+            /** @var ilTestEvaluationPassData $pass */
             foreach ($participant->getPasses() as $pass) {
                 $sum_time_of_work += $pass->getWorkingTime();
                 $pass_count++;
@@ -267,9 +279,6 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
 		$eval =& $this->object->getCompleteEvaluationData();
 		$participants =& $eval->getParticipants();
 
-		$total_passed = 0;
-		$total_passed_time = 0;
-
 		//Filter inactive users if checkbox is set
 		if ($this->checkFilterInactive($ref_id) == 1) {
 			$inactive_usrs = $this->getInactiveUsers();
@@ -288,32 +297,40 @@ where ref_id = " . $ilDB->quote($ref_id, "integer") . " and submitted = 1 ";
                 }
             }
         }
-
-		foreach ($participants as $userdata) {
-			if ($userdata->getPassed()) {
-				$total_passed ++;
-				$total_passed_time += $userdata->getTimeOfWork();
-			}
-		}
-
-        if (!$total_passed) {
-            return $as_number ? 0 : 'Nothing to display';
+        
+        $sum_time_of_work = 0;
+        $pass_count = 0;
+        foreach ($participants as $participant) {
+            /** @var ilTestEvaluationPassData $pass */
+            foreach ($participant->getPasses() as $pass) {
+                $reached_points = $pass->getReachedPoints();
+                $max_points = $pass->getMaxPoints();
+                $percentage = ($reached_points / $max_points) * 100;
+                $mark = ASS_MarkSchema::_getMatchingMarkFromObjId(ilObjTest::_lookupObjectId($ref_id), $percentage);
+                if ($mark['passed']) {
+                    $sum_time_of_work += $pass->getWorkingTime();
+                    $pass_count++;
+                }
+            }
         }
 
-		$average_passed_time = $total_passed ? $total_passed_time / $total_passed : 0;
+        $avg_processing_time = $pass_count ? $sum_time_of_work / $pass_count : 0;
 
         if ($as_number) {
-            return $average_passed_time;
+            return $avg_processing_time;
         }
 
-		$average_time = $average_passed_time;
-		$diff_seconds = $average_time;
-		$diff_hours = floor($diff_seconds / 3600);
-		$diff_seconds -= $diff_hours * 3600;
-		$diff_minutes = floor($diff_seconds / 60);
-		$diff_seconds -= $diff_minutes * 60;
+        if ($avg_processing_time == 0) {
+            return 'Nothing to display';
+        }
 
-		return sprintf("%02d:%02d:%02d", $diff_hours, $diff_minutes, $diff_seconds);
+        $diff_seconds = $avg_processing_time;
+        $diff_hours = floor($diff_seconds / 3600);
+        $diff_seconds -= $diff_hours * 3600;
+        $diff_minutes = floor($diff_seconds / 60);
+        $diff_seconds -= $diff_minutes * 60;
+
+        return sprintf("%02d:%02d:%02d", $diff_hours, $diff_minutes, $diff_seconds);
 	}
 
 

@@ -56,8 +56,8 @@ avg_result_passed_run_two#:#Average result (%) passed tests (Run 2)
 avg_result_finished_run_two#:#Average result (%) finished tests (Run 2)
 avg_test_time#:#Average test processing time
 avg_test_time_in_s#:#Average test processing time in seconds
-avg_passed_test_time#:#Average processing time of all passed tests
-avg_passed_test_time_in_s#:#Average processing time of all passed tests in seconds
+avg_passed_test_time#:#Average processing time of passed tests
+avg_passed_test_time_in_s#:#Average processing time of passed tests in seconds
 nr_participants_started#:#Total number of participants who started the test
 nr_participants_started#:#Total number of participants who started the test
 nr_tests_finished#:#Total finished tests (participants that used up all possible passes)
