@@ -191,6 +191,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 	 * copy the trigger
 	 */
 	public function copyTrigger(){
+	    /** @var xatsTriggers $trigger */
 		$trigger = xatsTriggers::find($_GET[self::IDENTIFIER_TRIGGER]);
 
 		$xat = new xatsTriggers();
@@ -199,7 +200,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 		$xat->setOperator($trigger->getOperator());
 		$xat->setValue($trigger->getValue());
 		$xat->setUserId($trigger->getUserId());
-		$xat->setUserThreshold($trigger->getUserPercentage());
+		$xat->setUserThreshold($trigger->getUserThreshold());
 		$xat->setDatesender($trigger->getDatesender());
 		$xat->setIntervalls($trigger->getIntervalls());
 
