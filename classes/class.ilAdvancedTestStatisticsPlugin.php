@@ -56,7 +56,7 @@ class ilAdvancedTestStatisticsPlugin extends ilUserInterfaceHookPlugin
      */
     public function handleEvent($component, $event, $parameters) {
         switch ($component) {
-            case 'Modules/Object':
+            case 'Services/Object':
                 switch ($event) {
                     case 'cloneObject':
                         if (!($parameters['object'] instanceof ilObjTest)) {
