@@ -734,7 +734,7 @@ inner join tst_result_cache on tst_active.active_id = tst_result_cache.active_fi
      * @return array
      */
     public function getQuestionPercentage($ref_id) {
-        $class = new ilAdvancedTestStatisticsAvgResults();
+        $class = new ilAdvancedTestStatisticsAvgResults($ref_id);
         $data = $class->getQuestionsFiltered($ref_id);
 
         $valuesreached = array();
