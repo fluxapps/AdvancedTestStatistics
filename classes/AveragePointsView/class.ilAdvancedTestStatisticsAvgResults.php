@@ -9,12 +9,12 @@ class ilAdvancedTestStatisticsAvgResults {
 	protected $object;
 
 
-	public function __construct() {
+	public function __construct(int $ref_id = 0) {
 		global $ilDB;
 
 
 		$this->DB = $ilDB;
-		$this->object = ilObjectFactory::getInstanceByRefId($_GET['ref_id']);
+		$this->object = ilObjectFactory::getInstanceByRefId($ref_id ?: $_GET['ref_id']);
 
 
 	}

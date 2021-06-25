@@ -108,7 +108,8 @@ class ilAdvancedTestStatisticsAlertFormGUI extends ilPropertyFormGUI {
 			ilAdvancedTestStatisticsPlugin::class
 		), ilAdvancedTestStatisticsPlugin::CMD_ADD_USER_AUTO_COMPLETE, "", true));
 		$user->setInfo('User which will receive the notification');
-		$this->addItem($user);
+        $user->setRequired(true);
+        $this->addItem($user);
 
 
 		$te = new ilNumberInputGUI($this->pl->txt('form_user_completed'),'user_completed');

@@ -1,6 +1,8 @@
 <?php
 
 require_once __DIR__ . '/../vendor/autoload.php';
+require_once'./libs/composer/vendor/autoload.php';
+
 /**
  *
  * @author Silas Stulz <sst@studer-raimann.ch>
@@ -49,6 +51,43 @@ class ilAdvancedTestStatisticsPlugin extends ilUserInterfaceHookPlugin
 		}
 	}
 
+    /**
+     * @param string $component
+     * @param string $event
+     * @param array $parameters
+     */
+    public function handleEvent($component, $event, $parameters) {
+        switch ($component) {
+            case 'Services/Object':
+                switch ($event) {
+                    case 'cloneObject':
+                        if (!($parameters['object'] instanceof ilObjTest)) {
+                            return;
+                        }
+                        /**
+                         * @var $new_obj      ilObjTest
+                         * @var $original_obj ilObjTest
+                         */
+                        $new_obj = $parameters['object'];
+                        $original_obj = $parameters['cloned_from_object'];
+                        /** @var xatsTriggers $trigger */
+                        foreach (xatsTriggers::where(['ref_id' => $original_obj->getRefId()])->get() as $trigger) {
+                            $new_trigger = new xatsTriggers();
+                            $new_trigger->setValue($trigger->getValue());
+                            $new_trigger->setDatesender($trigger->getDatesender());
+                            $new_trigger->setIntervalls($trigger->getIntervalls());
+                            $new_trigger->setOperator($trigger->getOperator());
+                            $new_trigger->setRefId($new_obj->getRefId());
+                            $new_trigger->setTriggerName($trigger->getTriggerName());
+                            $new_trigger->setUserId($trigger->getUserId());
+                            $new_trigger->setUserThreshold($trigger->getUserThreshold());
+                            $new_trigger->create();
+                        }
+                        break;
+                }
+                break;
+        }
+    }
 
 
 	/**
