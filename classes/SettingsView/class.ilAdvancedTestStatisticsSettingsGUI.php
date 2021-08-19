@@ -233,7 +233,7 @@ class ilAdvancedTestStatisticsSettingsGUI {
 		}
 
 		$class = new ilAdvancedTestStatisticsAggResults();
-		$finishedtests = $class->getTotalFinishedTests($this->ref_id);
+		$finishedtests = $class->getTotalFinishedTests($this->ref_id, true);
 
 		// Check if enough people finished the test
 		if($finishedtests < $trigger->getUserThreshold()){
