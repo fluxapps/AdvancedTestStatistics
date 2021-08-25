@@ -64,6 +64,25 @@ class ilAdvancedTestStatisticsAggResults {
 		return count($participants);
 	}
 
+    /**
+     * @param $ref_id int
+     * @return int 0 if no test runs
+     */
+    public function getLatestTestRunTimestamp(int $ref_id) : int
+    {
+        global $DIC;
+
+        $res = $DIC->database()->query("select max(tst_active.tstamp) as timestamp from object_data
+            inner join object_reference on object_data.obj_id = object_reference.obj_id
+            inner join tst_tests on object_data.obj_id = tst_tests.obj_fi
+            inner join tst_active on tst_tests.test_id = tst_active.test_fi
+            where ref_id = " . $DIC->database()->quote($ref_id, "integer"));
+        if ($res->numRows() == 0) {
+            return 0;
+        }
+        $rec = $DIC->database()->fetchAssoc($res);
+        return $rec['timestamp'] ?: 0;
+    }
 
 	/**
 	 * @param $ref_id

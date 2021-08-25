@@ -227,8 +227,9 @@ class xatsTriggers extends ActiveRecord {
 	/**
 	 * @return int
 	 */
-	public function getLastRun() {
-		return $this->lastrun;
+	public function getLastRun() : int
+    {
+		return (int) $this->lastrun;
 	}
 
 
